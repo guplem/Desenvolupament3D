@@ -160,6 +160,8 @@ MonoBehaviour:
   idleWeapon: {fileID: 7400000, guid: 2dc88a532afef7543883d293413305e1, type: 2}
   shootWeapon: {fileID: 7400000, guid: 59903c5c3f7e1f245b57e625f2ca2bd9, type: 2}
   reloadWeapon: {fileID: 7400000, guid: 25b4b88940c5bc4479e5b0f607a373a3, type: 2}
+  ammoGun: {fileID: 0}
+  ammoCarry: {fileID: 0}
 --- !u!114 &2853271028672352238
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -25,6 +25,9 @@ public class RotationController : MonoBehaviour
     
     void Update()
     {
+        //if (!Application.isFocused)
+        //    return;
+        
         // Pitch
         float l_MouseAxisY=Input.GetAxis("Mouse Y");
         m_Pitch+=l_MouseAxisY*m_PitchRotationalSpeed*Time.deltaTime*(m_InvertedPitch?-1:1);

@@ -1,5 +1,23 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!111 &1670993084
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153395488}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 2dc88a532afef7543883d293413305e1, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 2dc88a532afef7543883d293413305e1, type: 2}
+  - {fileID: 7400000, guid: 25b4b88940c5bc4479e5b0f607a373a3, type: 2}
+  - {fileID: 7400000, guid: 59903c5c3f7e1f245b57e625f2ca2bd9, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &2853271028381549705
 GameObject:
   m_ObjectHideFlags: 0
@@ -138,6 +156,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   timeBetweenShoots: 0.1
+  weaponAnimationComponent: {fileID: 1670993084}
+  idleWeapon: {fileID: 7400000, guid: 2dc88a532afef7543883d293413305e1, type: 2}
+  shootWeapon: {fileID: 7400000, guid: 59903c5c3f7e1f245b57e625f2ca2bd9, type: 2}
+  reloadWeapon: {fileID: 7400000, guid: 25b4b88940c5bc4479e5b0f607a373a3, type: 2}
 --- !u!114 &2853271028672352238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -349,8 +371,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9500000, guid: 75dcb58506746b84db987c4ce01e99b5, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 6b05b042a12c1c0499003640365df214, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 75dcb58506746b84db987c4ce01e99b5, type: 3}
+--- !u!1 &1153395488 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100002, guid: 75dcb58506746b84db987c4ce01e99b5,
+    type: 3}
+  m_PrefabInstance: {fileID: 1153363330}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1152972544 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400002, guid: 75dcb58506746b84db987c4ce01e99b5,

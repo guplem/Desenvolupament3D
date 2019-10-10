@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 2853271028672352237}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -152,6 +152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camera: {fileID: 2853271028381549707}
   m_ShootHitParticles: {fileID: 100010, guid: 031d08f52af1daa4f929b85221519426, type: 3}
+  decal: {fileID: 5388865348225377233, guid: 9c59b7d3c43a2414891556e2ac687603, type: 3}
   m_ShootLayerMask:
     serializedVersion: 2
     m_Bits: 1
@@ -162,6 +163,7 @@ MonoBehaviour:
   reloadWeapon: {fileID: 7400000, guid: 25b4b88940c5bc4479e5b0f607a373a3, type: 2}
   ammoGun: {fileID: 0}
   ammoCarry: {fileID: 0}
+  maxLife: 0
 --- !u!114 &2853271028672352238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -329,6 +331,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9500000, guid: 75dcb58506746b84db987c4ce01e99b5, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 6b05b042a12c1c0499003640365df214, type: 2}
     - target: {fileID: 400002, guid: 75dcb58506746b84db987c4ce01e99b5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.311
@@ -373,10 +379,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9500000, guid: 75dcb58506746b84db987c4ce01e99b5, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 6b05b042a12c1c0499003640365df214, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 75dcb58506746b84db987c4ce01e99b5, type: 3}
 --- !u!1 &1153395488 stripped

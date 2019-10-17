@@ -18,6 +18,21 @@ public class Health : MonoBehaviour
 
     [SerializeField] private UnityEvent onDeath;
 
+    private float originalLife;
+    private float originalShield;
+
+    private void Awake()
+    {
+        originalLife = life;
+        originalShield = shield;
+    }
+
+    private void OnEnable()
+    {
+        life = originalLife;
+        shield = originalShield;
+    }
+
     private void Start()
     {
         UpdateVisuals();

@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    public enum TItemType { LIFE, /*WEAPON,*/ AMMO, SHIELD } 
-    //GameManager m_GameController;
+    public enum TItemType { LIFE, AMMO, SHIELD } 
+
     public TItemType m_ItemType;
     public int quantity; 
 

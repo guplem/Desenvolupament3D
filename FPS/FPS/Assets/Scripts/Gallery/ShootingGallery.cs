@@ -46,7 +46,9 @@ public class ShootingGallery : MonoBehaviour
         score = 0;
         objectiveIndex = 0;
         
-        NextObjective();
+        try {
+            Invoke(nameof(NextObjective), galleryObjectives[objectiveIndex].timeBeforEevent);
+        } catch (Exception) { }
     }
     
     private void OnTriggerExit(Collider other)

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    public enum TItemType { LIFE, /*WEAPON,*/ AMMO } 
+    public enum TItemType { LIFE, /*WEAPON,*/ AMMO, SHIELD } 
     //GameManager m_GameController;
     public TItemType m_ItemType;
     public int quantity; 
@@ -24,22 +24,30 @@ public class Item : MonoBehaviour
             case TItemType.AMMO:
                 TakeAmmoItem();
                 break;
+            case TItemType.SHIELD:
+                TakeShieldItem();
+                break;
         }
     }
 
     void TakeLifeItem()
     {
-        if (GameManager.Instance.player.life < GameManager.Instance.player.maxLife)
-        {
-            GameManager.Instance.player.AddLife(quantity);
+
+        if (GameManager.Instance.player.health.ModifyLife(quantity) )
             DestroyItem();
-        }
+
     }
 
     void TakeAmmoItem()
     {
-        GameManager.Instance.player.AddAmmo(quantity);
-        DestroyItem();
+        if (GameManager.Instance.player.AddAmmo(quantity) )
+            DestroyItem();
+    }
+
+    void TakeShieldItem()
+    {
+        if (GameManager.Instance.player.health.ModifyShield(quantity) )
+            DestroyItem();
     }
 
 

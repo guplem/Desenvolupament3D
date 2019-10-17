@@ -10,7 +10,7 @@ public class PlayerManager : MonoBehaviour
     int m_CurrentAmmoCount = 20;
     [HideInInspector] public int m_CurrentAmmoCarry { get; private set; }
     int m_reloadAmmount = 25;
-    [SerializeField] private Camera camera;
+    [SerializeField] private Camera playerCamera;
     [SerializeField] private GameObject m_ShootHitParticles;
     [SerializeField] private GameObject decal;
     [SerializeField] private LayerMask m_ShootLayerMask;
@@ -24,14 +24,14 @@ public class PlayerManager : MonoBehaviour
 
     [SerializeField] private TMP_Text ammoGun;
     [SerializeField] private TMP_Text ammoCarry;
-    [HideInInspector] public float life { get; private set; }
-    [HideInInspector] public float maxLife;
+    public Health health { get; private set; }
 
     private void Start()
     {
         m_CurrentAmmoCarry = 100;
         weaponAnimationComponent.CrossFade(idleWeapon.name);
         UpdateAmmoVisuals();
+        health = GetComponent<Health>();
     }
 
     private void Update()
@@ -48,22 +48,16 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public void AddLife(int qtty)
-    {
-        life += qtty;
-        UpdateHealthVisuals();
-    }
 
-    public void AddAmmo(int qtty)
+
+    public bool AddAmmo(int qtty)
     {
         m_CurrentAmmoCarry += qtty;
         UpdateAmmoVisuals();
+        return true;
     }
     
-    private void UpdateHealthVisuals()
-    {
-        Debug.Log("UpdateHealthVisuals Not done yet");
-    }
+
 
     private void ReloadWeapon()
     {
@@ -87,7 +81,7 @@ public class PlayerManager : MonoBehaviour
     {
         m_CurrentAmmoCount--;
 
-        Ray l_CameraRay = camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f));
+        Ray l_CameraRay = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f));
         RaycastHit l_RaycastHit;
         if (Physics.Raycast(l_CameraRay, out l_RaycastHit, 200.0f, m_ShootLayerMask))
         {

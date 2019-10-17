@@ -1,12 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class RotationController : MonoBehaviour
 {
     private float m_Yaw;
     private float m_Pitch;
-    private float m_YawRotationalSpeed=360.0f;
+    //private float m_YawRotationalSpeed=360.0f;
     private float m_PitchRotationalSpeed=180.0f;
     private float m_MinPitch=-80.0f;
     private float m_MaxPitch=50.0f;

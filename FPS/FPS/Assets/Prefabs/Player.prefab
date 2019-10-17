@@ -115,6 +115,7 @@ GameObject:
   - component: {fileID: 2853271028672352238}
   - component: {fileID: 2853271028672352239}
   - component: {fileID: 2853271028672352237}
+  - component: {fileID: 650425805}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -150,7 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f83c7ee1136a7d1449f0f147dd6dc930, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera: {fileID: 2853271028381549707}
+  playerCamera: {fileID: 2853271028381549707}
   m_ShootHitParticles: {fileID: 100010, guid: 031d08f52af1daa4f929b85221519426, type: 3}
   decal: {fileID: 5388865348225377233, guid: 9c59b7d3c43a2414891556e2ac687603, type: 3}
   m_ShootLayerMask:
@@ -163,7 +164,6 @@ MonoBehaviour:
   reloadWeapon: {fileID: 7400000, guid: 25b4b88940c5bc4479e5b0f607a373a3, type: 2}
   ammoGun: {fileID: 0}
   ammoCarry: {fileID: 0}
-  maxLife: 0
 --- !u!114 &2853271028672352238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207,6 +207,24 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &650425805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2853271028672352234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 396409988ce44244389ad22069a19720, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  life: 75
+  maxLife: 100
+  shield: 20
+  maxShield: 100
+  lifeIndicatorText: {fileID: 0}
+  shieldIndicatorText: {fileID: 0}
 --- !u!1 &2853271029668381332
 GameObject:
   m_ObjectHideFlags: 0

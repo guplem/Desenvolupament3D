@@ -2,28 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectiveGallery : MonoBehaviour
+public class ObjectiveGallery : CustomEvent
 {
-    private ShootingGallery sg;
-        private int hp = 3;
+    [SerializeField] private AnimationClip animationClip;
+
+    [SerializeField] private int pointsEarned;
     
-    public void StartMatch(ShootingGallery sg)
+    public override bool DoEvent()
     {
         gameObject.SetActive(true);
-        this.sg = sg;
         
-        //TODO: animations and everything...
+        GetComponent<Animation>().Play(animationClip.name);
+        
+        return true;
     }
 
-    public void Hit()
+    public void Dead()
     {
-        hp--;
-
-        if (hp < 0)
-        {
-            sg.score += 100;
-            sg.NextObjective();
-            gameObject.SetActive(false);
-        }
+        // TODO: play particles?
+        
+        ShootingGallery.instance.score += pointsEarned;
+        gameObject.SetActive(false);
     }
 }

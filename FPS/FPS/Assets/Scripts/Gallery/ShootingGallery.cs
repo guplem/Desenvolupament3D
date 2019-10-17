@@ -31,6 +31,11 @@ public class ShootingGallery : MonoBehaviour
             instance = this;
     }
 
+    private void Start()
+    {
+        CloseGallery();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Player")) return;
@@ -50,10 +55,18 @@ public class ShootingGallery : MonoBehaviour
         
         Debug.Log("Exiting Gallery");
         
+        CloseGallery();
+    }
+
+    private void CloseGallery()
+    {
         scoreCount.gameObject.SetActive(false);
 
         foreach (var objective in galleryObjectives)
-            objective.eventToTrigger.gameObject.SetActive(false);
+            try {
+                objective.eventToTrigger.gameObject.SetActive(false);
+            } catch (Exception) { }
+            
         
         CancelInvoke();
     }
@@ -61,18 +74,15 @@ public class ShootingGallery : MonoBehaviour
 
     private void NextObjective()
     {
-        try
-        {
+        try {
             galleryObjectives[objectiveIndex].eventToTrigger.DoEvent();
-            
-            objectiveIndex++;
+        } catch (Exception) { }
+
+        objectiveIndex++;
         
+        try {
             Invoke(nameof(NextObjective), galleryObjectives[objectiveIndex].timeBeforEevent);
-        }
-        catch (Exception e)
-        {
-            Debug.LogWarning(e);
-        }
+        } catch (Exception) { }
         
 
     }

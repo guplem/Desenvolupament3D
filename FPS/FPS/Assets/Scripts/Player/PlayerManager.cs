@@ -10,6 +10,7 @@ public class PlayerManager : MonoBehaviour
     int m_CurrentAmmoCount = 20;
     [HideInInspector] public int m_CurrentAmmoCarry { get; private set; }
     int m_reloadAmmount = 25;
+    [SerializeField] private int weaponDamage = 5;
     [SerializeField] private Camera playerCamera;
     [SerializeField] private GameObject m_ShootHitParticles;
     [SerializeField] private GameObject decal;
@@ -89,6 +90,10 @@ public class PlayerManager : MonoBehaviour
             Destroy(inst, 10f);
             inst = Instantiate(decal, l_RaycastHit.point+(l_RaycastHit.normal*0.05f), Quaternion.LookRotation(l_RaycastHit.normal), l_RaycastHit.transform);
             GameManager.Instance.AddDecal(inst);
+
+            Health hitHP = l_RaycastHit.transform.GetComponent<Health>();
+            if (hitHP != null)
+                hitHP.Hurt(weaponDamage);
         }
 
         timeForNextShoot = timeBetweenShoots;

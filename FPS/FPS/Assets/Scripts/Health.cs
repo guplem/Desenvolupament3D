@@ -32,33 +32,37 @@ public class Health : MonoBehaviour
             {
                 // 1/4 of the damage goes to the health
                 if (d % 4 == 0)
-                    life -= 1;
+                    ModifyLife(-1);
                 
                 // the rest of the damage goes to the shield
                 else
-                    shield -= 1;
+                    ModifyShield(-1);
             }
             
             // If there is no shield
             else
             {
                 //All the damage goes to the life
-                life -= 1;
+                ModifyLife(-1);
             }
         }
     }
     
     public bool ModifyLife(int qtty)
     {
-        if (!(life < maxLife)) return false;
+        if (qtty > 0 && life >= maxLife) return false;
+        if (qtty < 0 && life <= 0) return false;
         
         life += qtty;
         
         if (life > maxLife)
             life = maxLife;
-        
-        if (life < 0)
+
+        if (life <= 0)
+        {
+            onDeath.Invoke();
             life = 0;
+        }
         
         UpdateVisuals();
         return true;
@@ -67,14 +71,15 @@ public class Health : MonoBehaviour
     
     public bool ModifyShield(int qtty)
     {
-        if (!(shield < maxShield)) return false;
+        if (qtty > 0 && shield >= maxShield) return false;
+        if (qtty < 0 && shield <= 0) return false;
         
         shield += qtty;
 
         if (shield > maxShield)
             shield = maxShield;
         
-        if (shield < 0)
+        if (shield <= 0)
             shield = 0;
         
         UpdateVisuals();

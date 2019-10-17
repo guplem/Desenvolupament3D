@@ -10,6 +10,8 @@ public class ObjectiveGallery : CustomEvent
     
     public override bool DoEvent()
     {
+        Debug.Log(gameObject.name + " performing event.", gameObject);
+        
         gameObject.SetActive(true);
         
         GetComponent<Animation>().Play(animationClip.name);
@@ -19,9 +21,12 @@ public class ObjectiveGallery : CustomEvent
 
     public void Dead()
     {
+        Debug.Log(gameObject.name + " completed.", gameObject);
+        
         // TODO: play particles?
         
         ShootingGallery.instance.score += pointsEarned;
+        
         gameObject.SetActive(false);
     }
 }

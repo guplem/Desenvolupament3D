@@ -112,4 +112,9 @@ public class Health : MonoBehaviour
         if (shieldIndicatorText != null)
             shieldIndicatorText.text = ( (shield > 0) ? ("Shield: " + shield) : ("") );
     }
+
+    public bool IsDead()
+    {
+        return life <= 0;
+    }
 }

@@ -117,4 +117,14 @@ public class Health : MonoBehaviour
     {
         return life <= 0;
     }
+
+    public float GetHp()
+    {
+        return life;
+    }
+
+    public float GetShield()
+    {
+        return shield;
+    }
 }

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TreeEditor;
 using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.UIElements;
+using Object = UnityEngine.Object;
 
 [RequireComponent(typeof(MoveObjectNavMesh))]
 [RequireComponent(typeof(Health))]
@@ -25,7 +27,7 @@ public class Enemy : MonoBehaviour
     private MoveObjectNavMesh navMesh;
     [SerializeField] private State startState;
     private State previousStateToHit = State.NULL;
-
+    
     [SerializeField] private Transform[] patrolPoints;
     private int currentPatrolPoint;
     
@@ -37,6 +39,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float shootMaxDistance;
 
     [SerializeField] private float hearPlayerMaxDistance;
+    
+    [SerializeField] private float maxSeeDistance;
 
     private Health health;
     
@@ -201,19 +205,25 @@ public class Enemy : MonoBehaviour
     {
         return Vector3.Distance(GameManager.Instance.player.transform.position, transform.position);
     }
-    
+
+    public float previousFrameHealth { get; set; }
     private bool HasBeenHit()
     {
-        // TODO
-        return false;
-    }
-
-    private bool CanSeePlayer()
-    {
-        // TODO
-        return true;
+        bool returnValue = previousFrameHealth > health.GetHp();
+        previousFrameHealth = health.GetHp();
+        return returnValue;
     }
     
+    private bool CanSeePlayer()
+    {
+        if (DistanceToPlayer() > maxSeeDistance) return false;
+        
+        if ()
+        
+        return true;
+    }
+
+
     private float SearchPlayer(float deltaTime)
     {
         // TODO --> rotate. Returns percentage of rotation
@@ -227,6 +237,9 @@ public class Enemy : MonoBehaviour
 
     private void ShootTo(Vector3 transformPosition)
     {
-        // TODO
+        Instantiate(bulletPrefab, shootingPosition.position, Quaternion.identity).GetComponent<Bullet>().SetTarget(GameManager.Instance.player.transform.position + Vector3.up*0.5f);
     }
+
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private Transform shootingPosition;
 }

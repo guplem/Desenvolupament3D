@@ -29,9 +29,11 @@ public class Enemy : MonoBehaviour
     private State previousStateToHit = State.NULL;
     
     [SerializeField] private Transform[] patrolPoints;
-    private int currentPatrolPoint;
+    private int currentPatrolPoint = -1;
     
-    private float percentageRotation = 0;
+    private bool completedRotation = false;
+    
+    [SerializeField] private float rotationSearchVelocity;
 
     [SerializeField] private float minChasingDistance;
     [SerializeField] private float maxChasingDistance;
@@ -41,17 +43,25 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float hearPlayerMaxDistance;
     
     [SerializeField] private float maxSeeDistance;
+    [SerializeField] private LayerMask collisionLayerMask; 
+    [SerializeField] private float coneAngle;
+
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private Transform shootingPosition;
 
     private Health health;
-    
-    
-    void Start()
+    private float startRotationPosition;
+
+
+    private void Start()
     {
-        SetState(startState);
         navMesh = GetComponent<MoveObjectNavMesh>();
         health = GetComponent<Health>();
+        
+        SetState(startState);
     }
-    void Update()
+
+    private void Update()
     {
         PerformState();
         CheckStateTransitions();
@@ -69,23 +79,41 @@ public class Enemy : MonoBehaviour
         if (newState == currentState)
             return;
 
+        Debug.Log(gameObject.name + " is entering state: " + newState.ToString());
+
+        // Exiting events
+        switch (currentState)
+        {
+            case State.Patrol:
+                navMesh.StopMoving();
+                break;
+        }
+        
         // Entering events
         switch (newState)
         {
-
+            case State.Alert:
+                completedRotation = false;
+                
+                startRotationPosition = transform.eulerAngles.y;
+                if (startRotationPosition < 0)
+                    startRotationPosition = 360 + startRotationPosition; 
+                
+                break;
+            
             case State.Hit:
                 previousStateToHit = currentState;
                 break;
             
             case State.Patrol:
-                percentageRotation = 0f;
+                navMesh.ResumeMoving();
                 break;
         }
 
         // Change state
         currentState = newState;
     }
-    
+
 
     private void PerformState()
     {
@@ -95,7 +123,12 @@ public class Enemy : MonoBehaviour
                 break;
             
             case State.Patrol:
-                if (navMesh.IsAtPos(patrolPoints[currentPatrolPoint].position)) {
+                if (currentPatrolPoint < 0)
+                {
+                    currentPatrolPoint = RotateIndex(currentPatrolPoint, patrolPoints.Length, -currentPatrolPoint);
+                    navMesh.GoTo(patrolPoints[currentPatrolPoint].position);
+                }
+                if (navMesh.IsAtPos(patrolPoints[currentPatrolPoint].position) ) {
                     currentPatrolPoint = RotateIndex(currentPatrolPoint, patrolPoints.Length, 1);
                     navMesh.GoTo(patrolPoints[currentPatrolPoint].position);
                 }
@@ -103,7 +136,8 @@ public class Enemy : MonoBehaviour
 
             case State.Alert:
                 if (!CanSeePlayer())
-                    percentageRotation = SearchPlayer(Time.deltaTime);
+                    completedRotation = SearchPlayer(Time.deltaTime);
+                Debug.Log("Completed rotation? " + completedRotation);
                 break;
             
             case State.Chase:
@@ -141,12 +175,6 @@ public class Enemy : MonoBehaviour
 
     private void CheckStateTransitions()
     {
-        if (health.IsDead())
-        {
-            SetState(State.Die);
-            return;
-        } 
-        
         if (HasBeenHit())
         {
             SetState(State.Hit);
@@ -161,12 +189,12 @@ public class Enemy : MonoBehaviour
                 break;
             
             case State.Patrol:
-                if (CanHearPlayer())
+                if (CanHearPlayerNew())
                     SetState(State.Alert);
                 break;
             
             case State.Alert:
-                if (percentageRotation >= 100f)
+                if (completedRotation)
                     if (previousStateToHit != State.NULL)
                         GoToStatePreviousToHit();
                     else
@@ -196,6 +224,28 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    public void Kill()
+    {
+        SetState(State.Die);
+    }
+
+    private bool couldHearPlayerPreviously = false;
+    private bool CanHearPlayerNew()
+    {
+        if (couldHearPlayerPreviously)
+        {
+            couldHearPlayerPreviously = CanHearPlayer();
+            return false;
+        }
+        else
+        {
+            couldHearPlayerPreviously =CanHearPlayer();
+            return couldHearPlayerPreviously;
+        }
+
+
+    }
+    
     private bool CanHearPlayer()
     {
         return DistanceToPlayer() < hearPlayerMaxDistance;
@@ -206,9 +256,11 @@ public class Enemy : MonoBehaviour
         return Vector3.Distance(GameManager.Instance.player.transform.position, transform.position);
     }
 
-    public float previousFrameHealth { get; set; }
+    private float previousFrameHealth;
     private bool HasBeenHit()
     {
+        if (health == null)
+            Debug.LogWarning("HEALTH IS NULL");
         bool returnValue = previousFrameHealth > health.GetHp();
         previousFrameHealth = health.GetHp();
         return returnValue;
@@ -218,21 +270,64 @@ public class Enemy : MonoBehaviour
     {
         if (DistanceToPlayer() > maxSeeDistance) return false;
         
-        if ()
-        
-        return true;
+        Vector3 l_Direction = (GameManager.Instance.player.transform.position+Vector3.up*0.9f )-transform.position;
+        Ray l_Ray=new Ray(transform.position, l_Direction);
+        float l_Distance=l_Direction.magnitude;
+        l_Direction/=l_Distance;
+        bool l_Collides=Physics.Raycast(l_Ray, l_Distance, collisionLayerMask.value);
+        float l_DotAngle=Vector3.Dot(l_Direction, transform.forward);
+        Debug.DrawRay(transform.position, l_Direction*l_Distance, l_Collides ? Color.red : Color.yellow);
+        return !l_Collides && l_DotAngle>Mathf.Cos(coneAngle*0.5f*Mathf.Deg2Rad);
     }
 
 
-    private float SearchPlayer(float deltaTime)
+
+    private bool SearchPlayer(float deltaTime)
     {
-        // TODO --> rotate. Returns percentage of rotation
-        return 0f;
+        Vector3 eulerAngles = transform.eulerAngles;
+        
+        float newRotation = eulerAngles.y + rotationSearchVelocity * deltaTime;
+        
+        bool returnValue = eulerAngles.y < startRotationPosition && newRotation >= startRotationPosition;
+        
+        transform.eulerAngles = new Vector3(eulerAngles.x, newRotation, eulerAngles.z);
+        
+        //Debug.Log("NEW ROTATION: " + newRotation + ", Start: " + startRotationPosition ) ;
+
+        return returnValue;
     }
 
+    private Coroutine _currentFade;
+    private Material _myMaterial;
     private void PlayDeathAnimation()
     {
-        // TODO
+        _myMaterial = GetComponent<Renderer>().material;
+        _currentFade = StartCoroutine(FadeTo(_myMaterial, 0f, 3f));
+    }
+    IEnumerator FadeTo(Material material, float targetOpacity, float duration) {
+
+        // Cache the current color of the material, and its initiql opacity.
+        Color color = material.color;
+        float startOpacity = color.a;
+
+        // Track how many seconds we've been fading.
+        float t = 0;
+
+        while(t < duration) {
+            // Step the fade forward one frame.
+            t += Time.deltaTime;
+            // Turn the time into an interpolation factor between 0 and 1.
+            float blend = Mathf.Clamp01(t / duration);
+
+            // Blend to the corresponding opacity between start & target.
+            color.a = Mathf.Lerp(startOpacity, targetOpacity, blend);
+
+            // Apply the resulting color to the material.
+            material.color = color;
+
+            // Wait one frame, and repeat.
+            yield return null;
+        }
     }
 
     private void ShootTo(Vector3 transformPosition)
@@ -240,6 +335,15 @@ public class Enemy : MonoBehaviour
         Instantiate(bulletPrefab, shootingPosition.position, Quaternion.identity).GetComponent<Bullet>().SetTarget(GameManager.Instance.player.transform.position + Vector3.up*0.5f);
     }
 
-    [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private Transform shootingPosition;
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = new Color(0f, 0.5f, 1, 0.4f);
+        Gizmos.DrawSphere(transform.position, maxChasingDistance);
+        
+        Gizmos.color = new Color(1f, 1f, 0f, 0.4f);
+        Gizmos.DrawSphere(transform.position, hearPlayerMaxDistance);
+        
+        Gizmos.color = new Color(1f, 0f, 1f, 0.4f);
+        Gizmos.DrawSphere(transform.position, maxSeeDistance);
+    }
 }

@@ -10,35 +10,29 @@ public class MoveObjectNavMesh : MonoBehaviour
 
     private NavMeshAgent agent;
 
-    private void Start()
+    private void Awake()
     {
-        agent = GetComponent<NavMeshAgent>();
-    }
-
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        
-            if (Physics.Raycast(ray, out hit))
-            {
-                agent.SetDestination(hit.point);
-            }
-        }
+        if (agent == null)
+            agent = GetComponent<NavMeshAgent>();
     }
 
     public void GoTo(Vector3 position)
     {
-        // TODO
+        agent.SetDestination(position);
     }
 
     public bool IsAtPos(Vector3 position)
     {
-        // TODO
-        return true;
+        return agent.remainingDistance < agent.radius;
+    }
+
+    public void ResumeMoving()
+    {
+        agent.isStopped = false;
     }
     
-    
+    public void StopMoving()
+    {
+        agent.isStopped = true;
+    }
 }

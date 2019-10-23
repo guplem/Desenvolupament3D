@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using Random = System.Random;
 
 public class Health : MonoBehaviour
 {
@@ -45,8 +46,9 @@ public class Health : MonoBehaviour
             // If there is shield
             if (shield > 0)
             {
+                int valRand = UnityEngine.Random.Range(0, 100);
                 // 1/4 of the damage goes to the health
-                if (d % 4 == 0)
+                if (valRand > 75)
                     ModifyLife(-1);
                 
                 // the rest of the damage goes to the shield

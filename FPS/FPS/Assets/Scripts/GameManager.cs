@@ -9,6 +9,17 @@ public class GameManager : MonoBehaviour
 private Queue<GameObject> decals = new Queue<GameObject>();
 
     public static GameManager Instance;
+    public bool hasKey = false;
+    
+    public int score
+    {
+        get { return _score;  }
+        set
+        {
+            _score = value;
+        }
+    }
+    private int _score;
 
     private void Awake()
     {

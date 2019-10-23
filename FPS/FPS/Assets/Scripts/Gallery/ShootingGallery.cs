@@ -9,15 +9,13 @@ public class ShootingGallery : MonoBehaviour
     [SerializeField] private TMP_Text scoreCount;
     public int score
     {
-        get { return _score;  }
+        get { return GameManager.Instance.score;  }
         set
         {
-            _score = value;
-            scoreCount.text = _score.ToString();
+            GameManager.Instance.score = value;
+            scoreCount.text = value.ToString();
         }
     }
-
-    private int _score;
     private int objectiveIndex;
 
     [SerializeField] private GalleryTimer[] galleryObjectives;

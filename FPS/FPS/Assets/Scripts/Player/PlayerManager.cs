@@ -86,9 +86,12 @@ public class PlayerManager : MonoBehaviour
         RaycastHit l_RaycastHit;
         if (Physics.Raycast(l_CameraRay, out l_RaycastHit, 200.0f, m_ShootLayerMask))
         {
+            if (l_RaycastHit.collider.isTrigger) return;
+                
             GameObject inst = Instantiate(m_ShootHitParticles, l_RaycastHit.point, Quaternion.Euler(l_RaycastHit.normal));
             Destroy(inst, 10f);
             inst = Instantiate(decal, l_RaycastHit.point+(l_RaycastHit.normal*0.05f), Quaternion.LookRotation(l_RaycastHit.normal), l_RaycastHit.transform);
+            inst.transform.SetGlobalScale(decal.transform.localScale);
             GameManager.Instance.AddDecal(inst);
 
             Health hitHP = l_RaycastHit.transform.GetComponent<Health>();

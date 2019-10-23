@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    public enum TItemType { LIFE, AMMO, SHIELD } 
+    public enum TItemType { LIFE, AMMO, SHIELD, KEY } 
 
     public TItemType m_ItemType;
     public int quantity; 
@@ -26,6 +26,10 @@ public class Item : MonoBehaviour
                 break;
             case TItemType.SHIELD:
                 TakeShieldItem();
+                break;
+            
+            case TItemType.KEY:
+                GameManager.Instance.hasKey = true;
                 break;
         }
     }

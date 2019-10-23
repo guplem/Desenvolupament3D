@@ -1,20 +1,20 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 
 public class Bullet : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
+    private Vector3 direction = Vector3.zero;
+    [SerializeField] private int damage;
+    
+    //private Vector3 targetPosition;
     // Update is called once per frame
     void Update()
     {
-        if (targetPosition == null) return;
-        Vector3 direction = targetPosition - transform.position;
+        if (direction == Vector3.zero) return;
+        
         transform.position += direction.normalized * speed;
     }
 
@@ -22,8 +22,16 @@ public class Bullet : MonoBehaviour
 
     public void SetTarget(Vector3 targetPosition)
     {
-        this.targetPosition = targetPosition;
+        direction = (targetPosition - transform.position).normalized;
     }
 
-    private Vector3 targetPosition;
+    private void OnTriggerEnter(Collider other)
+    {
+        Health health = other.GetComponent<Health>();
+        if (health != null)
+        {
+            health.Hurt(damage);
+        }
+        Destroy(this.gameObject);
+    }
 }

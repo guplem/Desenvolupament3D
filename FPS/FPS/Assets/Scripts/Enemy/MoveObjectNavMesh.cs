@@ -9,6 +9,7 @@ public class MoveObjectNavMesh : MonoBehaviour
 {
 
     private NavMeshAgent agent;
+    public Vector3 currentDestination { get { return agent.destination; } }
 
     private void Awake()
     {
@@ -26,6 +27,11 @@ public class MoveObjectNavMesh : MonoBehaviour
         return agent.remainingDistance < agent.radius;
     }
 
+    public bool IsAtDestination()
+    {
+       return IsAtPos(currentDestination);
+    }
+
     public void ResumeMoving()
     {
         agent.isStopped = false;
@@ -34,5 +40,15 @@ public class MoveObjectNavMesh : MonoBehaviour
     public void StopMoving()
     {
         agent.isStopped = true;
+    }
+
+    private void OnDrawGizmos()
+    {
+        try
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(currentDestination, 0.2f );
+        } catch (Exception) { }
+
     }
 }

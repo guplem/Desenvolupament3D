@@ -39,6 +39,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float maxChasingDistance;
 
     [SerializeField] private float shootMaxDistance;
+    [SerializeField] private float timeBetweenShoots;
 
     [SerializeField] private float hearPlayerMaxDistance;
     
@@ -48,6 +49,9 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform shootingPosition;
+
+
+    [SerializeField] private float deadFadeDuration;
 
     private Health health;
     private float startRotationPosition;
@@ -64,7 +68,8 @@ public class Enemy : MonoBehaviour
     private void Update()
     {
         PerformState();
-        CheckStateTransitions();
+        if (!health.IsDead())
+            CheckStateTransitions();
     }
 
 
@@ -84,8 +89,8 @@ public class Enemy : MonoBehaviour
         // Exiting events
         switch (currentState)
         {
-            case State.Patrol:
-                navMesh.StopMoving();
+            case State.Alert:
+                navMesh.ResumeMoving();
                 break;
         }
         
@@ -93,6 +98,7 @@ public class Enemy : MonoBehaviour
         switch (newState)
         {
             case State.Alert:
+                navMesh.StopMoving();
                 completedRotation = false;
                 
                 startRotationPosition = transform.eulerAngles.y;
@@ -105,9 +111,6 @@ public class Enemy : MonoBehaviour
                 previousStateToHit = currentState;
                 break;
             
-            case State.Patrol:
-                navMesh.ResumeMoving();
-                break;
         }
 
         // Change state
@@ -141,20 +144,31 @@ public class Enemy : MonoBehaviour
                 break;
             
             case State.Chase:
-                navMesh.GoTo(GetChasingPosition(GameManager.Instance.player.transform.position));
+                Chase(GetChasingPosition(GameManager.Instance.player.transform.position));
                 break;
             
             case State.Attack:
-                ShootTo(GameManager.Instance.player.transform.position);
+                ShootTo(GameManager.Instance.player.transform.position, Time.deltaTime);
                 break;
 
             case State.Die:
                 PlayDeathAnimation();
                 break;
             
-            default:
-                throw new ArgumentOutOfRangeException();
         }
+    }
+
+    private void Chase(Vector3 chasePos)
+    {
+        float disX = Mathf.Abs(navMesh.currentDestination.x - chasePos.x);
+        float disY = Mathf.Abs(navMesh.currentDestination.z - chasePos.z);
+        
+        if (new Vector2(disX, disY).magnitude < 1.5f) return;
+        
+        navMesh.GoTo(chasePos);
+        //navMesh.GoTo(Vector3.Lerp(chasePos, transform.position, 0.5f));
+        
+        Debug.Log("GOING TO " + chasePos + ". CURRENT DESTINATION " + navMesh.currentDestination);
     }
 
     private Vector3 GetChasingPosition(Vector3 transformPosition)
@@ -206,7 +220,7 @@ public class Enemy : MonoBehaviour
             case State.Chase:
                 if (DistanceToPlayer() > maxChasingDistance)
                     SetState(State.Patrol);
-                if (DistanceToPlayer() < minChasingDistance)
+                if (DistanceToPlayer() <= minChasingDistance || navMesh.IsAtDestination())
                     SetState(State.Attack);
                 break;
             
@@ -261,6 +275,7 @@ public class Enemy : MonoBehaviour
     {
         if (health == null)
             Debug.LogWarning("HEALTH IS NULL");
+        
         bool returnValue = previousFrameHealth > health.GetHp();
         previousFrameHealth = health.GetHp();
         return returnValue;
@@ -297,12 +312,9 @@ public class Enemy : MonoBehaviour
         return returnValue;
     }
 
-    private Coroutine _currentFade;
-    private Material _myMaterial;
     private void PlayDeathAnimation()
     {
-        _myMaterial = GetComponent<Renderer>().material;
-        _currentFade = StartCoroutine(FadeTo(_myMaterial, 0f, 3f));
+        StartCoroutine(FadeTo(GetComponent<Renderer>().material, 0f, deadFadeDuration));
     }
     IEnumerator FadeTo(Material material, float targetOpacity, float duration) {
 
@@ -316,13 +328,12 @@ public class Enemy : MonoBehaviour
         while(t < duration) {
             // Step the fade forward one frame.
             t += Time.deltaTime;
+            
             // Turn the time into an interpolation factor between 0 and 1.
             float blend = Mathf.Clamp01(t / duration);
 
             // Blend to the corresponding opacity between start & target.
             color.a = Mathf.Lerp(startOpacity, targetOpacity, blend);
-
-            // Apply the resulting color to the material.
             material.color = color;
 
             // Wait one frame, and repeat.
@@ -330,9 +341,18 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void ShootTo(Vector3 transformPosition)
+    private float timeForNextShoot;
+    private void ShootTo(Vector3 transformPosition, float deltaTIme)
     {
-        Instantiate(bulletPrefab, shootingPosition.position, Quaternion.identity).GetComponent<Bullet>().SetTarget(GameManager.Instance.player.transform.position + Vector3.up*0.5f);
+        if (timeForNextShoot <= 0)
+        {
+            Instantiate(bulletPrefab, shootingPosition.position, Quaternion.identity).GetComponent<Bullet>().SetTarget(GameManager.Instance.player.transform.position + Vector3.up*0.5f);
+            timeForNextShoot = timeBetweenShoots;
+        }
+        else
+        {
+            timeForNextShoot -= deltaTIme;
+        }
     }
 
     private void OnDrawGizmos()

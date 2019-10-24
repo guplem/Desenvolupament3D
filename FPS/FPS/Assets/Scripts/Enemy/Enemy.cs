@@ -7,7 +7,7 @@ using UnityEngine.Analytics;
 using UnityEngine.UIElements;
 using Object = UnityEngine.Object;
 
-[RequireComponent(typeof(MoveObjectNavMesh))]
+//[RequireComponent(typeof(MoveObjectNavMesh))]
 [RequireComponent(typeof(Health))]
 public class Enemy : MonoBehaviour
 {
@@ -24,7 +24,7 @@ public class Enemy : MonoBehaviour
         NULL
     }
     private State currentState;
-    private MoveObjectNavMesh navMesh;
+    [SerializeField] private MoveObjectNavMesh navMesh;
     [SerializeField] private State startState;
     private State previousStateToHit = State.NULL;
     
@@ -59,7 +59,7 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
-        navMesh = GetComponent<MoveObjectNavMesh>();
+        //navMesh = GetComponent<MoveObjectNavMesh>();
         health = GetComponent<Health>();
         
         SetState(startState);

@@ -13,7 +13,7 @@ public class ShootingGallery : MonoBehaviour
         set
         {
             GameManager.Instance.score = value;
-            scoreCount.text = value.ToString();
+            scoreCount.text = value.ToString() + "/40";
         }
     }
     private int objectiveIndex;
@@ -47,8 +47,22 @@ public class ShootingGallery : MonoBehaviour
         try {
             Invoke(nameof(NextObjective), galleryObjectives[objectiveIndex].timeBeforEevent);
         } catch (Exception) { }
+        
+        //InvokeRepeating(nameof(DeactivateObjective), 5f, 5f);
     }
-    
+
+    /*private void DeactivateObjective()
+    {
+        foreach (GalleryTimer objective in galleryObjectives)
+            try {
+                if (objective.eventToTrigger.gameObject.activeSelf)
+                {
+                    objective.eventToTrigger.gameObject.SetActive(false);
+                    return;
+                }
+            } catch (Exception) { }
+    }*/
+
     private void OnTriggerExit(Collider other)
     {
         if (!other.CompareTag("Player")) return;
@@ -76,9 +90,16 @@ public class ShootingGallery : MonoBehaviour
     {
         try {
             galleryObjectives[objectiveIndex].eventToTrigger.DoEvent();
+            
         } catch (Exception) { }
 
+        int indxPast = objectiveIndex <= 0 ? galleryObjectives.Length - 1 : objectiveIndex - 1;
+        galleryObjectives[indxPast].eventToTrigger.gameObject.SetActive(false);
+
         objectiveIndex++;
+
+        if (objectiveIndex > galleryObjectives.Length)
+            objectiveIndex = 0;
         
         try {
             Invoke(nameof(NextObjective), galleryObjectives[objectiveIndex].timeBeforEevent);

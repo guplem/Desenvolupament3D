@@ -7,7 +7,8 @@ public class ObjectiveGallery : CustomEvent
     [SerializeField] private AnimationClip animationClip;
 
     [SerializeField] private int pointsEarned;
-    
+    [SerializeField] private GameObject deadParticle;
+
     public override bool DoEvent()
     {
         Debug.Log(gameObject.name + " performing event.", gameObject);
@@ -22,8 +23,8 @@ public class ObjectiveGallery : CustomEvent
     public void Dead()
     {
         Debug.Log(gameObject.name + " completed.", gameObject);
-        
-        // TODO: play particles?
+
+        Instantiate(deadParticle, transform.position, Quaternion.identity);
         
         ShootingGallery.instance.score += pointsEarned;
         

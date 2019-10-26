@@ -98,7 +98,7 @@ public class ShootingGallery : MonoBehaviour
 
         objectiveIndex++;
 
-        if (objectiveIndex > galleryObjectives.Length)
+        if (objectiveIndex >= galleryObjectives.Length)
             objectiveIndex = 0;
         
         try {

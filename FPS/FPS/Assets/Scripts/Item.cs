@@ -5,11 +5,18 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    public enum TItemType { LIFE, AMMO, SHIELD, KEY } 
+    public enum TItemType { LIFE = 0, AMMO = 1, SHIELD = 2, KEY = 3 }
+
 
     public TItemType m_ItemType;
     public int quantity; 
 
+    [SerializeField] private Material[] materials;
+
+    private void Start()
+    {
+        GetComponent<MeshRenderer>().material = materials[(int)m_ItemType];
+    }
 
     private void OnTriggerEnter(Collider other)
     {

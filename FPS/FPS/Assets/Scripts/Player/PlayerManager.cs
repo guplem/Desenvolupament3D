@@ -97,6 +97,7 @@ public class PlayerManager : MonoBehaviour
             Health hitHP = l_RaycastHit.transform.GetComponent<Health>();
             if (hitHP != null)
                 hitHP.Hurt(weaponDamage);
+                
         }
 
         timeForNextShoot = timeBetweenShoots;

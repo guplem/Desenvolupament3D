@@ -268,6 +268,26 @@ PrefabInstance:
       propertyPath: patrolPoints.Array.data[3]
       value: 
       objectReference: {fileID: 1272803842}
+    - target: {fileID: 6031246642303915965, guid: 2f652e72d5f196842b8c08bc62feb451,
+        type: 3}
+      propertyPath: patrolPoints.Array.data[0]
+      value: 
+      objectReference: {fileID: 926119691}
+    - target: {fileID: 6031246642303915965, guid: 2f652e72d5f196842b8c08bc62feb451,
+        type: 3}
+      propertyPath: patrolPoints.Array.data[1]
+      value: 
+      objectReference: {fileID: 1519909221}
+    - target: {fileID: 6031246642303915965, guid: 2f652e72d5f196842b8c08bc62feb451,
+        type: 3}
+      propertyPath: patrolPoints.Array.data[2]
+      value: 
+      objectReference: {fileID: 1256014222}
+    - target: {fileID: 6031246642303915965, guid: 2f652e72d5f196842b8c08bc62feb451,
+        type: 3}
+      propertyPath: patrolPoints.Array.data[3]
+      value: 
+      objectReference: {fileID: 1272803842}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f652e72d5f196842b8c08bc62feb451, type: 3}
 --- !u!4 &315941377 stripped

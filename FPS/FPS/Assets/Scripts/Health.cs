@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 using Random = System.Random;
 
 public class Health : MonoBehaviour
@@ -16,6 +17,7 @@ public class Health : MonoBehaviour
     
     [SerializeField] private TMP_Text lifeIndicatorText;
     [SerializeField] private TMP_Text shieldIndicatorText;
+    [SerializeField] private Image lifeIndicatorImage;
 
     [SerializeField] private UnityEvent onDeath;
 
@@ -39,7 +41,7 @@ public class Health : MonoBehaviour
         UpdateVisuals();
     }
 
-    public void Hurt(int damage)
+    public virtual void Hurt(int damage)
     {
         for (int d = 0; d < damage; d++)
         {
@@ -65,7 +67,7 @@ public class Health : MonoBehaviour
         }
     }
     
-    public bool ModifyLife(int qtty)
+    public virtual bool ModifyLife(int qtty)
     {
         if (qtty > 0 && life >= maxLife) return false;
         if (qtty < 0 && life <= 0) return false;
@@ -86,7 +88,7 @@ public class Health : MonoBehaviour
 
     }
     
-    public bool ModifyShield(int qtty)
+    public virtual bool ModifyShield(int qtty)
     {
         if (qtty > 0 && shield >= maxShield) return false;
         if (qtty < 0 && shield <= 0) return false;
@@ -108,24 +110,26 @@ public class Health : MonoBehaviour
     private void UpdateVisuals()
     {
         if (lifeIndicatorText != null)
-            lifeIndicatorText.text = "HP: " + life;
-        
+            lifeIndicatorText.text = /*"HP: " + */life.ToString();
         
         if (shieldIndicatorText != null)
-            shieldIndicatorText.text = ( (shield > 0) ? ("Shield: " + shield) : ("") );
+            shieldIndicatorText.text = ( (shield >= 0) ? (/*"Shield: " + */shield.ToString()) : ("") );
+
+        if (lifeIndicatorImage != null)
+            lifeIndicatorImage.fillAmount = life / maxLife;
     }
 
-    public bool IsDead()
+    public virtual bool IsDead()
     {
         return life <= 0;
     }
 
-    public float GetHp()
+    public virtual float GetHp()
     {
         return life;
     }
 
-    public float GetShield()
+    public virtual float GetShield()
     {
         return shield;
     }

@@ -27,6 +27,9 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.isTrigger)
+            return;
+        
         Health health = other.GetComponent<Health>();
         if (health != null)
         {

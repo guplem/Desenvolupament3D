@@ -12,6 +12,9 @@ public class Door : MonoBehaviour
     [SerializeField] private int pointsToOpen;
     [SerializeField] private bool needKey;
     private bool open = false;
+    
+    [SerializeField] private AudioSource openSound;
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -19,6 +22,7 @@ public class Door : MonoBehaviour
         if (pointsToOpen > GameManager.Instance.score) return;
 
         open = true;
+        openSound.Play();
     }
 
     private void Update()

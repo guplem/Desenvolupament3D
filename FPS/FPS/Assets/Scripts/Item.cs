@@ -15,7 +15,7 @@ public class Item : MonoBehaviour
 
     private void Start()
     {
-        GetComponent<MeshRenderer>().material = materials[(int)m_ItemType];
+        Setup(m_ItemType);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -37,6 +37,7 @@ public class Item : MonoBehaviour
             
             case TItemType.KEY:
                 GameManager.Instance.hasKey = true;
+                DestroyItem();
                 break;
         }
     }
@@ -65,5 +66,11 @@ public class Item : MonoBehaviour
     private void DestroyItem()
     {
         GameManager.Destroy(gameObject);
+    }
+
+    public void Setup(TItemType itemType)
+    {
+        m_ItemType = itemType;
+        GetComponent<MeshRenderer>().material = materials[(int)m_ItemType];
     }
 }

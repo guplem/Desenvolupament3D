@@ -11,9 +11,11 @@ public class PlayerManager : MonoBehaviour
     [HideInInspector] public int m_CurrentAmmoCarry { get; private set; }
     int m_reloadAmmount = 25;
     [SerializeField] private int weaponDamage = 5;
-    [SerializeField] private Camera playerCamera;
+    [SerializeField] public Camera playerCamera;
     [SerializeField] private GameObject m_ShootHitParticles;
     [SerializeField] private GameObject decal;
+    [SerializeField] private AudioSource shootingSound;
+    [SerializeField] private AudioSource hitMarkerSound;
     [SerializeField] private LayerMask m_ShootLayerMask;
     [SerializeField] private float timeBetweenShoots = 0.5f;
     private float timeForNextShoot = 0.2f;
@@ -80,31 +82,42 @@ public class PlayerManager : MonoBehaviour
 
     void Shoot()
     {
+        //SHOOT
         m_CurrentAmmoCount--;
-
+        shootingSound.Play();
+        timeForNextShoot = timeBetweenShoots;
+        weaponAnimationComponent.CrossFade(shootWeapon.name, 0.1f);
+        weaponAnimationComponent.CrossFadeQueued(idleWeapon.name);
+        UpdateAmmoVisuals();
+        
+        //HIT CONTROL
         Ray l_CameraRay = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f));
         RaycastHit l_RaycastHit;
         if (Physics.Raycast(l_CameraRay, out l_RaycastHit, 200.0f, m_ShootLayerMask))
         {
+            //Ensure proper col
             if (l_RaycastHit.collider.isTrigger) return;
                 
+            //Particles
             GameObject inst = Instantiate(m_ShootHitParticles, l_RaycastHit.point, Quaternion.Euler(l_RaycastHit.normal));
             Destroy(inst, 10f);
+            
+            //Decal
             inst = Instantiate(decal, l_RaycastHit.point+(l_RaycastHit.normal*0.05f), Quaternion.LookRotation(l_RaycastHit.normal), l_RaycastHit.transform);
             inst.transform.SetGlobalScale(decal.transform.localScale);
             GameManager.Instance.AddDecal(inst);
 
+            // Damage
             Health hitHP = l_RaycastHit.transform.GetComponent<Health>();
             if (hitHP != null)
+            {
                 hitHP.Hurt(weaponDamage);
+                hitMarkerSound.Play();
+            }
+                
         }
 
-        timeForNextShoot = timeBetweenShoots;
 
-        weaponAnimationComponent.CrossFade(shootWeapon.name, 0.1f);
-        weaponAnimationComponent.CrossFadeQueued(idleWeapon.name);
-        
-        UpdateAmmoVisuals();
     }
 
     private bool CanShoot()

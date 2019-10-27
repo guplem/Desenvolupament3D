@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using TreeEditor;
 using UnityEngine;
-using UnityEngine.Analytics;
-using UnityEngine.UIElements;
-using Object = UnityEngine.Object;
 
 //[RequireComponent(typeof(MoveObjectNavMesh))]
 [RequireComponent(typeof(Health))]
@@ -52,7 +47,11 @@ public class Enemy : MonoBehaviour
 
 
     [SerializeField] private float deadFadeDuration;
-
+    [SerializeField] private AudioSource deadSound;
+    [SerializeField] private float dropDispersion;
+    [SerializeField] private Item itemPrefab;
+    [SerializeField] private Item.TItemType[] dropGameObjects;
+    
     private Health health;
     private float startRotationPosition;
 
@@ -84,7 +83,7 @@ public class Enemy : MonoBehaviour
         if (newState == currentState)
             return;
 
-        Debug.Log(gameObject.name + " is entering state: " + newState.ToString());
+//        Debug.Log(gameObject.name + " is entering state: " + newState.ToString());
 
         // Exiting events
         switch (currentState)
@@ -140,7 +139,7 @@ public class Enemy : MonoBehaviour
             case State.Alert:
                 if (!CanSeePlayer())
                     completedRotation = SearchPlayer(Time.deltaTime);
-                Debug.Log("Completed rotation? " + completedRotation);
+//                Debug.Log("Completed rotation? " + completedRotation);
                 break;
             
             case State.Chase:
@@ -152,7 +151,7 @@ public class Enemy : MonoBehaviour
                 break;
 
             case State.Die:
-                PlayDeathAnimation();
+                PlayDeathAnimation(transform);
                 break;
             
         }
@@ -168,7 +167,7 @@ public class Enemy : MonoBehaviour
         navMesh.GoTo(chasePos);
         //navMesh.GoTo(Vector3.Lerp(chasePos, transform.position, 0.5f));
         
-        Debug.Log("GOING TO " + chasePos + ". CURRENT DESTINATION " + navMesh.currentDestination);
+//        Debug.Log("GOING TO " + chasePos + ". CURRENT DESTINATION " + navMesh.currentDestination);
     }
 
     private Vector3 GetChasingPosition(Vector3 transformPosition)
@@ -240,6 +239,13 @@ public class Enemy : MonoBehaviour
 
     public void Kill()
     {
+        foreach (Item.TItemType itemDrop in dropGameObjects)
+        {
+            Vector3 posMove = new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-2f, -1.5f), UnityEngine.Random.Range(-1f, 1f)) * dropDispersion;
+            Item item = Instantiate(itemPrefab, transform.position + posMove, Quaternion.identity).GetComponent<Item>();
+            item.Setup(itemDrop);
+        }
+        deadSound.Play();
         SetState(State.Die);
     }
 
@@ -312,9 +318,9 @@ public class Enemy : MonoBehaviour
         return returnValue;
     }
 
-    private void PlayDeathAnimation()
+    private void PlayDeathAnimation(Transform tr)
     {
-        StartCoroutine(FadeTo(GetComponent<Renderer>().material, 0f, deadFadeDuration));
+        GetComponent<fade>().Dissappear();
     }
     IEnumerator FadeTo(Material material, float targetOpacity, float duration) {
 
@@ -342,6 +348,7 @@ public class Enemy : MonoBehaviour
     }
 
     private float timeForNextShoot;
+
     private void ShootTo(Vector3 transformPosition, float deltaTIme)
     {
         if (timeForNextShoot <= 0)

@@ -8,6 +8,8 @@ public class ObjectiveGallery : CustomEvent
 
     [SerializeField] private int pointsEarned;
     [SerializeField] private GameObject deadParticle;
+    [SerializeField] private AudioSource killSound;
+
 
     public override bool DoEvent()
     {
@@ -27,7 +29,12 @@ public class ObjectiveGallery : CustomEvent
         Instantiate(deadParticle, transform.position, Quaternion.identity);
         
         ShootingGallery.instance.score += pointsEarned;
+
+        if (killSound != null)
+            killSound.Play();
+        //explosionSound.Play();
         
         gameObject.SetActive(false);
+        
     }
 }

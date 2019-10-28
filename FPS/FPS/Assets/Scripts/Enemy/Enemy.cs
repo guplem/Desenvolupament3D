@@ -6,8 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(Health))]
 public class Enemy : MonoBehaviour
 {
-
-    enum State
+    public enum State
     {
         Idle,
         Patrol, 
@@ -52,7 +51,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Item itemPrefab;
     [SerializeField] private Item.TItemType[] dropGameObjects;
     
-    private Health health;
+    [HideInInspector] public Health health;
     private float startRotationPosition;
 
 
@@ -77,8 +76,8 @@ public class Enemy : MonoBehaviour
         SetState(previousStateToHit);
         previousStateToHit = State.NULL;
     }
-    
-    private void SetState(State newState)
+
+    public void SetState(State newState)
     {
         if (newState == currentState)
             return;
@@ -139,7 +138,7 @@ public class Enemy : MonoBehaviour
             case State.Alert:
                 if (!CanSeePlayer())
                     completedRotation = SearchPlayer(Time.deltaTime);
-//                Debug.Log("Completed rotation? " + completedRotation);
+                //Debug.Log("Completed rotation? " + completedRotation);
                 break;
             
             case State.Chase:
@@ -165,9 +164,6 @@ public class Enemy : MonoBehaviour
         if (new Vector2(disX, disY).magnitude < 1.5f) return;
         
         navMesh.GoTo(chasePos);
-        //navMesh.GoTo(Vector3.Lerp(chasePos, transform.position, 0.5f));
-        
-//        Debug.Log("GOING TO " + chasePos + ". CURRENT DESTINATION " + navMesh.currentDestination);
     }
 
     private Vector3 GetChasingPosition(Vector3 transformPosition)
@@ -191,6 +187,7 @@ public class Enemy : MonoBehaviour
         if (HasBeenHit())
         {
             SetState(State.Hit);
+            Debug.Log("HIT");
             return;
         }
         
@@ -247,6 +244,7 @@ public class Enemy : MonoBehaviour
         }
         deadSound.Play();
         SetState(State.Die);
+        Destroy(transform.parent.gameObject, 1f);
     }
 
     private bool couldHearPlayerPreviously = false;
@@ -364,13 +362,13 @@ public class Enemy : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = new Color(0f, 0.5f, 1, 0.4f);
+        Gizmos.color = new Color(0f, 0.5f, 1, 0.3f);
         Gizmos.DrawSphere(transform.position, maxChasingDistance);
         
-        Gizmos.color = new Color(1f, 1f, 0f, 0.4f);
+        Gizmos.color = new Color(1f, 1f, 0f, 0.3f);
         Gizmos.DrawSphere(transform.position, hearPlayerMaxDistance);
         
-        Gizmos.color = new Color(1f, 0f, 1f, 0.4f);
+        Gizmos.color = new Color(1f, 0f, 1f, 0.3f);
         Gizmos.DrawSphere(transform.position, maxSeeDistance);
     }
 }

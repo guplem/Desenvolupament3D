@@ -13,7 +13,7 @@ public class ShootingGallery : MonoBehaviour
         set
         {
             GameManager.Instance.score = value;
-            scoreCount.text = value.ToString() + "/40";
+            scoreCount.text = value.ToString() + "/20";
         }
     }
     private int objectiveIndex;

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -52,7 +53,10 @@ public class fade : MonoBehaviour
 
             for (int i = 0; i < obj.transform.childCount; i++)
             {
-                n.AddRange(SelectRenderers(obj.transform.GetChild(i).gameObject));
+                try
+                {
+                    n.AddRange(SelectRenderers(obj.transform.GetChild(i).gameObject));
+                } catch (Exception) { }
             }
 
             if (obj.GetComponent<Renderer>())

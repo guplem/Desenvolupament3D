@@ -8,7 +8,7 @@ public class PlayerMovementController : MonoBehaviour
     private CharacterController m_CharacterController;
     private float m_Speed=16.0f;
     private float m_FastSpeedMultiplier = 1.65f;
-    private float m_JumpSpeed = 5f;
+    private float m_JumpSpeed = 6f;
     private float m_VerticalSpeed = 0f;
     private bool m_OnGround;
     

@@ -19,6 +19,7 @@ public class RotationController : MonoBehaviour
         m_Pitch=m_PitchControllerTransform.localRotation.eulerAngles.x;
         
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
     
     void Update()

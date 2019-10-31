@@ -28,24 +28,24 @@ public class PlayerMovementController : MonoBehaviour
         Vector3 moveDirectionSide = transform.right * horizontalInput;
         Vector3 direction = (moveDirectionForward + moveDirectionSide).normalized;
         
-        // Calculate walking the distance
+        // Calculate the distance that the player will walk
         Vector3 distance = direction * m_Speed * Time.deltaTime;
 
-        //Sprint
+        // Alter the distance that the player will move if it is sprinting
         float l_SpeedMultiplier=1.0f;
         if(Input.GetKey(KeyCode.LeftShift))
             l_SpeedMultiplier=m_FastSpeedMultiplier;
         distance*=Time.deltaTime*m_Speed*l_SpeedMultiplier;
 
-        //Jump
+        // Calculate the vertical velocity depending on the jumping mechanic
         if(m_OnGround && Input.GetButtonDown("Jump"))
             m_VerticalSpeed=m_JumpSpeed;
         
-        // Apply gravity
+        // Calculate the vertical velocity depending on the gravity
         m_VerticalSpeed+=Physics.gravity.y*Time.deltaTime;
         distance.y=m_VerticalSpeed*Time.deltaTime;
         
-        // Apply Movement to Player
+        // Apply the movement to Player
         CollisionFlags l_CollisionFlags=m_CharacterController.Move(distance);
         
         // Process vertical collisions
@@ -56,11 +56,8 @@ public class PlayerMovementController : MonoBehaviour
         }
         else
             m_OnGround=false;
-
         if((l_CollisionFlags & CollisionFlags.Above)!=0 &&  m_VerticalSpeed>0.0f)
             m_VerticalSpeed=0.0f;
-
-
     }
-
+    
 }

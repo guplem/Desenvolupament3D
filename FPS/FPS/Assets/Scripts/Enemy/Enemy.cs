@@ -82,8 +82,6 @@ public class Enemy : MonoBehaviour
         if (newState == currentState)
             return;
 
-//        Debug.Log(gameObject.name + " is entering state: " + newState.ToString());
-
         // Exiting events
         switch (currentState)
         {
@@ -129,7 +127,7 @@ public class Enemy : MonoBehaviour
                     currentPatrolPoint = RotateIndex(currentPatrolPoint, patrolPoints.Length, -currentPatrolPoint);
                     navMesh.GoTo(patrolPoints[currentPatrolPoint].position);
                 }
-                if (navMesh.IsAtPos(patrolPoints[currentPatrolPoint].position) ) {
+                if (navMesh.IsAtDestination() ) {
                     currentPatrolPoint = RotateIndex(currentPatrolPoint, patrolPoints.Length, 1);
                     navMesh.GoTo(patrolPoints[currentPatrolPoint].position);
                 }
@@ -137,8 +135,7 @@ public class Enemy : MonoBehaviour
 
             case State.Alert:
                 if (!CanSeePlayer())
-                    completedRotation = SearchPlayer(Time.deltaTime);
-                //Debug.Log("Completed rotation? " + completedRotation);
+                    completedRotation = SearchPlayer(Time.deltaTime); // Guarda en una variable si ja ha donat una volta sencera o no buscant el jugador.
                 break;
             
             case State.Chase:
@@ -187,10 +184,10 @@ public class Enemy : MonoBehaviour
         if (HasBeenHit())
         {
             SetState(State.Hit);
-            Debug.Log("HIT");
             return;
         }
         
+        // Depending on the current state check if the conditions to switch to any state are happening
         switch (currentState)
         {
             case State.Idle:
@@ -204,8 +201,8 @@ public class Enemy : MonoBehaviour
                 break;
             
             case State.Alert:
-                if (completedRotation)
-                    if (previousStateToHit != State.NULL)
+                if (completedRotation) // Have already searched for the player
+                    if (previousStateToHit != State.NULL) // If it comes from the "Hit" state...
                         GoToStatePreviousToHit();
                     else
                         SetState(State.Patrol);
@@ -229,8 +226,6 @@ public class Enemy : MonoBehaviour
                 SetState(State.Alert);
                 break;
 
-            default:
-                throw new ArgumentOutOfRangeException();
         }
     }
 
@@ -303,17 +298,15 @@ public class Enemy : MonoBehaviour
 
     private bool SearchPlayer(float deltaTime)
     {
-        Vector3 eulerAngles = transform.eulerAngles;
+        Vector3 eulerAngles = transform.eulerAngles; // Obtenir la rotació actual
         
-        float newRotation = eulerAngles.y + rotationSearchVelocity * deltaTime;
+        float newRotation = eulerAngles.y + rotationSearchVelocity * deltaTime; // Calcular la nova rotació
         
-        bool returnValue = eulerAngles.y < startRotationPosition && newRotation >= startRotationPosition;
+        bool returnValue = eulerAngles.y < startRotationPosition && newRotation >= startRotationPosition; // Calcular si ja haurà donat la volta completa o encara no
         
-        transform.eulerAngles = new Vector3(eulerAngles.x, newRotation, eulerAngles.z);
-        
-        //Debug.Log("NEW ROTATION: " + newRotation + ", Start: " + startRotationPosition ) ;
+        transform.eulerAngles = new Vector3(eulerAngles.x, newRotation, eulerAngles.z); // Aplicar la nova rotació
 
-        return returnValue;
+        return returnValue; // Retornar si ja ha donat la volta completa o encara no
     }
 
     private void PlayDeathAnimation(Transform tr)

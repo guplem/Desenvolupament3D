@@ -8,7 +8,7 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
 
-    [SerializeField] private Camera playerCamera;
+    [SerializeField] public Camera playerCamera;
 
     private void Update()
     {
@@ -20,11 +20,13 @@ public class PlayerManager : MonoBehaviour
 
     void Shoot()
     {
-
+        //TODO: create portal
+        Debug.Log("SHOOT");
     }
 
     private bool CanShoot()
     {
+        // TODO: portal check
         return true;
     }
 

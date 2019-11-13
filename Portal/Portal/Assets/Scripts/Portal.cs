@@ -1,17 +1,29 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Portal : MonoBehaviour
 {
-    [SerializeField] private Transform m_PlayerCamera;
+    [SerializeField] private bool deactivateAtStart;
+    
+    /*[SerializeField] */private Transform m_PlayerCamera;
     [SerializeField] private Portal m_MirrorPortal;
     [SerializeField] private Camera m_PortalCamera;
-    [SerializeField] private float m_MinFOV=8.0f;
-    [SerializeField] private float m_maxFov=60.0f;
-    [SerializeField] private float m_MaxFOVDistance=20.0f;
     [SerializeField] private float m_NearClipOffset=0.5f;
+    //FOV
+    /*[SerializeField] private float m_MinFOV=8.0f;
+    [SerializeField] private float m_maxFov=60.0f;
+    [SerializeField] private float m_MaxFOVDistance=20.0f;*/
+
     
+    private void Start()
+    {
+        m_PlayerCamera = GameManager.Instance.player.playerCamera.transform;
+        gameObject.SetActive(!deactivateAtStart);
+    }
+
+
     void Update ()
     {
         Vector3 l_EulerAngles=transform.rotation.eulerAngles;
@@ -22,7 +34,6 @@ public class Portal : MonoBehaviour
         m_MirrorPortal.m_PortalCamera.transform.position=m_MirrorPortal.transform.TransformPoint(l_ReflectedPosition);
         m_MirrorPortal.m_PortalCamera.transform.forward=m_MirrorPortal.transform.TransformDirection(l_ReflectedDirection);
         m_PortalCamera.nearClipPlane=Vector3.Distance(m_PortalCamera.transform.position, this.transform.position)+m_NearClipOffset;
-        
         
         //FOV
         /*Vector3 l_PlayerToPortal=transform.position-m_PlayerCamera.position;

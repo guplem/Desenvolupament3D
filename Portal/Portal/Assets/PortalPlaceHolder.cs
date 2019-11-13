@@ -30,11 +30,12 @@ public class PortalPlaceHolder : PortalBases
     {
         Vector3 hitNormal = Vector3.zero;
 
-        //TODO DISTANCE?
-        
         foreach (PortalPositionHitInfo portalPosition in portalPositions)
         {
             if (portalPosition == null)
+                return false;
+
+            if (portalPosition.distanceFromPointToWall > 0.1f)
                 return false;
             
             if (hitNormal == Vector3.zero)

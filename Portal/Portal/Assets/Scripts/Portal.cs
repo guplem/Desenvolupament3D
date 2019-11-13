@@ -79,7 +79,7 @@ public class Portal : PortalBases
         Transform newTransform = otherGameObject.transform;
         
         Vector3 l_Position = transform.InverseTransformPoint(transform.position);
-        newTransform.position = m_MirrorPortal.transform.TransformPoint(l_Position);
+        newTransform.position = m_MirrorPortal.transform.TransformPoint(l_Position) + m_MirrorPortal.transform.forward*-0.1f;
         Vector3 l_Direction = transform.InverseTransformDirection(-transform.forward);
         newTransform.forward = m_MirrorPortal.transform.TransformDirection(l_Direction);
         newTransform.localScale = (m_MirrorPortal.GetProportionalSizeToDefault() / GetProportionalSizeToDefault() ) * newTransform.localScale.x * Vector3.one;

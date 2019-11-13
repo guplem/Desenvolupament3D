@@ -11,13 +11,16 @@ public class PortalPositionHitInfo
     //public string hitTag { get { return gameObjectAtPosition.tag; }  private set { ; } }
     public Vector3 hitNormal { get; private set; }
     public Vector3 hitPosition { get; private set; }
+    public float distanceFromPointToWall { get; set; }
 
-    public PortalPositionHitInfo(GameObject gameObjectAtPosition, Vector3 raycastHitNormal, Vector3 hitPosition)
+    public PortalPositionHitInfo(GameObject gameObjectAtPosition, Vector3 raycastHitNormal, Vector3 hitPosition, float distanceFromPointToWall)
     {
         this.gameObjectAtPosition = gameObjectAtPosition;
         this.hitNormal = hitNormal;
         this.hitPosition = hitPosition;
+        this.distanceFromPointToWall = distanceFromPointToWall;
     }
+    
 }
 
 public class PortalCheckPosition : MonoBehaviour
@@ -30,7 +33,7 @@ public class PortalCheckPosition : MonoBehaviour
         RaycastHit raycastHit;
         
         if(Physics.Raycast(ray, out raycastHit))
-            return new PortalPositionHitInfo(raycastHit.collider.gameObject, raycastHit.normal, raycastHit.point);
+            return new PortalPositionHitInfo(raycastHit.collider.gameObject, raycastHit.normal, raycastHit.point, Vector3.Distance(transform.position, raycastHit.point));
         else
             return null;
     }

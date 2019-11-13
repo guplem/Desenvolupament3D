@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - PortalZone
+  - Pickable
   layers:
   - Default
   - TransparentFX

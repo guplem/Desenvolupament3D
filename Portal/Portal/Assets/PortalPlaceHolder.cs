@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PortalPlaceHolder : MonoBehaviour
+public class PortalPlaceHolder : PortalBases
 {
     [SerializeField] private string ableToSpawnPortalTag;
     [SerializeField] private List<PortalCheckPosition> portalPositionsToCheck;

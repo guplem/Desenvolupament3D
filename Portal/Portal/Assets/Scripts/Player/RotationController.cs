@@ -2,7 +2,7 @@
 
 public class RotationController : MonoBehaviour
 {
-    private float m_Yaw;
+    public float m_Yaw;
     private float m_Pitch;
     //private float m_YawRotationalSpeed=360.0f;
     private float m_PitchRotationalSpeed=180.0f;

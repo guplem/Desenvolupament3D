@@ -12,7 +12,6 @@ public class Laser : MonoBehaviour
     private float maxLaserDistance=250.0f;
     private LaserBehaviour currentLaserBehaviour;
     
-    
     private void Start()
     {
         lineRenderer = GetComponent<LineRenderer>();
@@ -39,8 +38,6 @@ public class Laser : MonoBehaviour
 
         lineRenderer.SetPosition(0, transform.position);
         lineRenderer.SetPosition(1, endPosition);
-        
-
     }
 
 }

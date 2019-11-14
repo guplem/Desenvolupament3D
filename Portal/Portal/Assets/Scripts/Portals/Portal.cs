@@ -51,7 +51,7 @@ public class Portal : PortalBases
         if (cc != null)
             cc.enabled = false;
             
-        TeleportToMirror(other.gameObject);
+        TeleportToMirror(other.gameObject, 0.1f);
         m_MirrorPortal.IgnoreEnterOf(other.gameObject);
         RotationController rc = other.GetComponent<RotationController>();
         if (rc != null)
@@ -74,9 +74,15 @@ public class Portal : PortalBases
             objectsToIgnoreAtTriggerEnter.Remove(other.gameObject);
     }
 
-    private void TeleportToMirror(GameObject otherGameObject)
+    /*private void TeleportToMirror(GameObject otherGameObject)
     {
         Transform newTransform = otherGameObject.transform;
+        
+        Rigidbody rb = otherGameObject.GetComponent<Rigidbody>();
+        float velRb = 0;
+        if (rb != null)
+            velRb = rb.velocity.magnitude;
+        //TODO: set the rb.velocity to the proper value relative to the rotation and relative velocity.
         
         Vector3 l_Position = transform.InverseTransformPoint(transform.position);
         newTransform.position = m_MirrorPortal.transform.TransformPoint(l_Position) + m_MirrorPortal.transform.forward*-0.1f;
@@ -85,15 +91,62 @@ public class Portal : PortalBases
         newTransform.localScale = (m_MirrorPortal.GetProportionalSizeToDefault() / GetProportionalSizeToDefault() ) * newTransform.localScale.x * Vector3.one;
         //newTransform.rotation =  otherGameObject.transform.rotation * Quaternion.Inverse(m_MirrorPortal.transform.rotation) * transform.rotation;
         otherGameObject.transform.SetTransform(newTransform);
-
-        Rigidbody rb = otherGameObject.GetComponent<Rigidbody>();
-        if (rb == null) return;
-        //TODO: set the rb.velocity to the proper value relative to the rotation and relative velocity.
+        
+        if (rb != null) 
+            rb.velocity = -1 * velRb * transform.forward;
     }
 
     public float GetProportionalSizeToDefault()
     {
         return transform.localScale.x / defaultSize;
+    }*/
+    
+    float velocityFU = -1f;
+    private Rigidbody rbFU = null;
+    public void TeleportToMirror(GameObject otherGameObject, float offset)
+    {
+        
+        
+        try
+        {
+            rbFU = otherGameObject.GetComponent<Rigidbody>();
+            velocityFU = rbFU.velocity.magnitude;
+        } catch (Exception) { }
+        
+        otherGameObject.transform.position = GetOtherPortalPosition(this, offset);
+
+        Vector3 direction = transform.InverseTransformDirection(-otherGameObject.transform.forward);
+        otherGameObject.transform.forward = m_MirrorPortal.transform.TransformDirection(direction);
+
+        Debug.DrawRay(m_MirrorPortal.transform.position, otherGameObject.transform.forward, Color.red, 3f);
+    }
+
+    private void FixedUpdate()
+    {
+        if (rbFU != null && velocityFU > 0)
+        {
+            rbFU.velocity = rbFU.gameObject.transform.forward * velocityFU;
+            rbFU = null;
+            velocityFU = -1;
+        }
+    }
+
+    private Vector3 GetOtherPortalPosition(Portal portal, float offset)
+    {
+        Vector3 otherForward = portal.m_MirrorPortal.transform.forward;
+        Vector3 other = portal.m_MirrorPortal.transform.position;
+
+        offset += .01f;
+
+        Vector3 l_Position = portal.transform.InverseTransformPoint(transform.position);
+        Vector3 returnPosition = portal.m_MirrorPortal.transform.TransformPoint(l_Position);
+
+        if (!(Math.Abs(otherForward.z) < 0.01f))
+            returnPosition.z = other.z + (otherForward.z * offset);
+        else if (!(Math.Abs(otherForward.x) < 0.01f))
+            returnPosition.x = other.x + (otherForward.x * offset);
+
+        return returnPosition;
     }
     
 }

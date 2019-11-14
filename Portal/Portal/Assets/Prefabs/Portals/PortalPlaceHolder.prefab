@@ -305,7 +305,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5035728667549600579}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.232}
+  m_LocalPosition: {x: 0, y: 0, z: 0.232}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1990412684}
@@ -450,7 +450,7 @@ PrefabInstance:
     - target: {fileID: 8989403319725112023, guid: 87510c294fffdf54c942ccf9754e006a,
         type: 3}
       propertyPath: m_Name
-      value: PortalPlaceHolder Variant
+      value: PortalPlaceHolder
       objectReference: {fileID: 0}
     - target: {fileID: 8989403319725112019, guid: 87510c294fffdf54c942ccf9754e006a,
         type: 3}

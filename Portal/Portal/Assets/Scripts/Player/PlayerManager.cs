@@ -55,9 +55,9 @@ public class PlayerManager : MonoBehaviour
                 if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out raycastHit, 200, allExceptPlayer))
                 {
                     // Set Physically
-                    portalPlaceHolder.ModifySize(Input.mouseScrollDelta.y*Time.deltaTime);
+                    portalPlaceHolder.ModifySize(Input.mouseScrollDelta.y*Time.deltaTime*2.5f);
                     portalPlaceHolder.transform.position = raycastHit.point;
-                    portalPlaceHolder.transform.rotation = Quaternion.LookRotation(raycastHit.normal*-1);
+                    portalPlaceHolder.transform.rotation = Quaternion.LookRotation(raycastHit.normal);
                 
                     // Set Visually
                     canBePlaced = portalPlaceHolder.CanSpawnPortal();

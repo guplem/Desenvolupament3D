@@ -130,6 +130,7 @@ GameObject:
   - component: {fileID: 2853271028672352239}
   - component: {fileID: 2853271028672352237}
   - component: {fileID: 1540505664}
+  - component: {fileID: 4240477999653344376}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -231,6 +232,18 @@ MonoBehaviour:
   portalBlue: {fileID: 0}
   portalOrange: {fileID: 0}
   player: {fileID: 2853271028672352236}
+--- !u!114 &4240477999653344376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2853271028672352234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2de6035222babe4c8e1340fd03b3b61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2853271029668381332
 GameObject:
   m_ObjectHideFlags: 0
@@ -352,7 +365,7 @@ GameObject:
   m_Layer: 9
   m_Name: AttachedObjectPos
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -364,7 +377,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9017648990523328136}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.45, y: -0.45, z: 1.85}
+  m_LocalPosition: {x: 0, y: -0.3, z: 1.85}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2853271028381549708}

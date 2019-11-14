@@ -36,7 +36,7 @@ public class PlayerManager : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                m_ObjectAttached.GetComponent<Rigidbody>().velocity = playerCamera.transform.forward * 3f;
+                m_ObjectAttached.GetComponent<Rigidbody>().velocity = playerCamera.transform.forward * 8.5f;
                 m_ObjectAttached = null;
             }
             
@@ -84,7 +84,6 @@ public class PlayerManager : MonoBehaviour
                     if (raycastHit.collider.gameObject.CompareTag("Pickable"))
                     {
                         m_ObjectAttached = raycastHit.collider.gameObject;
-                        Debug.Log("PICK '" + m_ObjectAttached + "'");                        
                     }
             }
         }
@@ -127,7 +126,6 @@ public class PlayerManager : MonoBehaviour
 
     private void UpdateAttachedObject()
     {
-        Debug.Log("UpdateAttachedObject: '" + m_ObjectAttached + "'");
         if (m_ObjectAttached == null)
             return;
         

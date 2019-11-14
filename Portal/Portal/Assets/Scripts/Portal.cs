@@ -85,6 +85,10 @@ public class Portal : PortalBases
         newTransform.localScale = (m_MirrorPortal.GetProportionalSizeToDefault() / GetProportionalSizeToDefault() ) * newTransform.localScale.x * Vector3.one;
         //newTransform.rotation =  otherGameObject.transform.rotation * Quaternion.Inverse(m_MirrorPortal.transform.rotation) * transform.rotation;
         otherGameObject.transform.SetTransform(newTransform);
+
+        Rigidbody rb = otherGameObject.GetComponent<Rigidbody>();
+        if (rb == null) return;
+        //TODO: set the rb.velocity to the proper value relative to the rotation and relative velocity.
     }
 
     public float GetProportionalSizeToDefault()

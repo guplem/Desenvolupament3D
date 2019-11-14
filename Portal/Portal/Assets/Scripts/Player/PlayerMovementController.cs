@@ -6,9 +6,9 @@ using UnityEngine;
 public class PlayerMovementController : MonoBehaviour
 {
     private CharacterController m_CharacterController;
-    private float m_Speed=25.0f;
-    private float m_FastSpeedMultiplier = 1.8f;
-    private float m_JumpSpeed = 10f;
+    private float m_Speed=17.5f;
+    private float m_FastSpeedMultiplier = 1.65f;
+    private float m_JumpSpeed = 4f;
     private float m_VerticalSpeed = 0f;
     private bool m_OnGround;
     

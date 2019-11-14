@@ -8,7 +8,7 @@ public class PlayerLaserBehaviour : MonoBehaviour, LaserBehaviour
 
     public void OnHitStart(Vector3 woldPosition)
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        GameManager.Instance.Kill();
     }
 
     public void OnHitEnd()

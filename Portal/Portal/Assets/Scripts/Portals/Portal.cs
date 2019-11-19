@@ -53,9 +53,7 @@ public class Portal : PortalBases
             
         TeleportToMirror(other.gameObject, 0.1f);
         m_MirrorPortal.IgnoreEnterOf(other.gameObject);
-        RotationController rc = other.GetComponent<RotationController>();
-        if (rc != null)
-            rc.m_Yaw = m_MirrorPortal.transform.rotation.eulerAngles.y -180;
+
         
         if (cc != null)
             cc.enabled = true;
@@ -90,9 +88,21 @@ public class Portal : PortalBases
         otherGameObject.transform.position = GetOtherPortalPosition(this, offset);
 
         Vector3 direction = transform.InverseTransformDirection(-otherGameObject.transform.forward);
-        otherGameObject.transform.forward = m_MirrorPortal.transform.TransformDirection(direction);
+
+
+        try
+        {
+            Debug.Log("CHARACTER ROTATED");
+            otherGameObject.GetComponent<RotationController>().m_Yaw = m_MirrorPortal.transform.rotation.eulerAngles.y;
+        }
+        catch (Exception)
+        {
+            otherGameObject.transform.forward = m_MirrorPortal.transform.TransformDirection(direction);
+            Debug.Log("OBJECT ROTATED");
+        }
 
         Debug.DrawRay(m_MirrorPortal.transform.position, otherGameObject.transform.forward, Color.red, 3f);
+        
     }
 
     private void FixedUpdate()

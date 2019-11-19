@@ -100,17 +100,18 @@ public class PlayerManager : MonoBehaviour
                 {
                     _pickedObject = null;
                     m_RigidbodyOfObjectAttached.isKinematic=false;
-                    //m_ObjectAttached.GetComponent<Companion>().SetTeleport(true);
-                    //m_ObjectAttached.AddForce(m_AttachingPosition.forward*Force);
+                    m_ColliderOfObjectAttached.enabled = true;
                 }
             }
             else
             {
                 m_RigidbodyOfObjectAttached = value.GetComponent<Rigidbody>();
+                m_ColliderOfObjectAttached = value.GetComponent<Collider>();
                 m_AttachingObjectStartRotation = value.transform.rotation;
                 if (m_RigidbodyOfObjectAttached == null)
                     Debug.LogError(value.name + " does not have a RigidBody but hs the tag 'Pickable'.");
                 m_RigidbodyOfObjectAttached.isKinematic=true;
+                m_ColliderOfObjectAttached.enabled = false;
                 _pickedObject = value;
             }
             
@@ -118,6 +119,7 @@ public class PlayerManager : MonoBehaviour
     }
     private GameObject _pickedObject = null;
     private Rigidbody m_RigidbodyOfObjectAttached;
+    private Collider m_ColliderOfObjectAttached;
     [SerializeField] private Transform m_AttachingPosition;
     [SerializeField] private float m_AttachingObjectSpeed;
     private bool attachedObjectReachedPos = false;

@@ -43,6 +43,9 @@ public class Portal : PortalBases
         if (objectsToIgnoreAtTriggerEnter.Contains(other.gameObject))
             return;
         
+        if (other.gameObject == GameManager.Instance.player.m_ObjectAttached)
+            return;
+        
         Rigidbody rb = other.GetComponent<Rigidbody>();
         CharacterController cc = other.GetComponent<CharacterController>();
 
@@ -103,6 +106,12 @@ public class Portal : PortalBases
 
         Debug.DrawRay(m_MirrorPortal.transform.position, otherGameObject.transform.forward, Color.red, 3f);
         
+        otherGameObject.transform.localScale = (m_MirrorPortal.GetProportionalSizeToDefault() / GetProportionalSizeToDefault() ) * otherGameObject.transform.localScale.x * Vector3.one;
+    }
+    
+    public float GetProportionalSizeToDefault()
+    {
+        return transform.localScale.x / defaultSize;
     }
 
     private void FixedUpdate()

@@ -89,7 +89,7 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    private GameObject m_ObjectAttached
+    public GameObject m_ObjectAttached
     {
         get { return _pickedObject; }
         set {
@@ -100,7 +100,7 @@ public class PlayerManager : MonoBehaviour
                 {
                     _pickedObject = null;
                     m_RigidbodyOfObjectAttached.isKinematic=false;
-                    m_ColliderOfObjectAttached.enabled = true;
+                    //m_ColliderOfObjectAttached.enabled = true;
                 }
             }
             else
@@ -111,7 +111,7 @@ public class PlayerManager : MonoBehaviour
                 if (m_RigidbodyOfObjectAttached == null)
                     Debug.LogError(value.name + " does not have a RigidBody but hs the tag 'Pickable'.");
                 m_RigidbodyOfObjectAttached.isKinematic=true;
-                m_ColliderOfObjectAttached.enabled = false;
+                //m_ColliderOfObjectAttached.enabled = false;
                 _pickedObject = value;
             }
             

@@ -2354,12 +2354,12 @@ PrefabInstance:
     - target: {fileID: 135000315400857690, guid: 22605620f1f372d4b92172195b4e5aec,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 2.485
       objectReference: {fileID: 0}
     - target: {fileID: 135000315400857690, guid: 22605620f1f372d4b92172195b4e5aec,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1.61
       objectReference: {fileID: 0}
     - target: {fileID: 135000315400857690, guid: 22605620f1f372d4b92172195b4e5aec,
         type: 3}
@@ -3124,16 +3124,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PortalBlue
       objectReference: {fileID: 0}
-    - target: {fileID: 2288228378114373947, guid: 87510c294fffdf54c942ccf9754e006a,
-        type: 3}
-      propertyPath: m_PlayerCamera
-      value: 
-      objectReference: {fileID: 263371644}
-    - target: {fileID: 2288228378114373947, guid: 87510c294fffdf54c942ccf9754e006a,
-        type: 3}
-      propertyPath: m_MirrorPortal
-      value: 
-      objectReference: {fileID: 388745984}
     - target: {fileID: 8989403319725112019, guid: 87510c294fffdf54c942ccf9754e006a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3189,6 +3179,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2288228378114373947, guid: 87510c294fffdf54c942ccf9754e006a,
+        type: 3}
+      propertyPath: m_PlayerCamera
+      value: 
+      objectReference: {fileID: 263371644}
+    - target: {fileID: 2288228378114373947, guid: 87510c294fffdf54c942ccf9754e006a,
+        type: 3}
+      propertyPath: m_MirrorPortal
+      value: 
+      objectReference: {fileID: 388745984}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 87510c294fffdf54c942ccf9754e006a, type: 3}
 --- !u!1001 &9131000614008497766

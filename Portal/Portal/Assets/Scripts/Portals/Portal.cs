@@ -73,33 +73,7 @@ public class Portal : PortalBases
         if (objectsToIgnoreAtTriggerEnter.Contains(other.gameObject))
             objectsToIgnoreAtTriggerEnter.Remove(other.gameObject);
     }
-
-    /*private void TeleportToMirror(GameObject otherGameObject)
-    {
-        Transform newTransform = otherGameObject.transform;
-        
-        Rigidbody rb = otherGameObject.GetComponent<Rigidbody>();
-        float velRb = 0;
-        if (rb != null)
-            velRb = rb.velocity.magnitude;
-        //TODO: set the rb.velocity to the proper value relative to the rotation and relative velocity.
-        
-        Vector3 l_Position = transform.InverseTransformPoint(transform.position);
-        newTransform.position = m_MirrorPortal.transform.TransformPoint(l_Position) + m_MirrorPortal.transform.forward*-0.1f;
-        Vector3 l_Direction = transform.InverseTransformDirection(-transform.forward);
-        newTransform.forward = m_MirrorPortal.transform.TransformDirection(l_Direction);
-        newTransform.localScale = (m_MirrorPortal.GetProportionalSizeToDefault() / GetProportionalSizeToDefault() ) * newTransform.localScale.x * Vector3.one;
-        //newTransform.rotation =  otherGameObject.transform.rotation * Quaternion.Inverse(m_MirrorPortal.transform.rotation) * transform.rotation;
-        otherGameObject.transform.SetTransform(newTransform);
-        
-        if (rb != null) 
-            rb.velocity = -1 * velRb * transform.forward;
-    }
-
-    public float GetProportionalSizeToDefault()
-    {
-        return transform.localScale.x / defaultSize;
-    }*/
+    
     
     float velocityFU = -1f;
     private Rigidbody rbFU = null;

@@ -8,7 +8,11 @@ public class InstaKillArea : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        Rigidbody rb = other.GetComponent<Rigidbody>();
+        if (rb != null)
+            Destroy(other.gameObject);
+        
+        else if (other.gameObject.CompareTag("Player"))
             GameManager.Instance.Kill();
     }
 }

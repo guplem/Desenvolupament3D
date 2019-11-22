@@ -40,4 +40,12 @@ public class Laser : MonoBehaviour
         lineRenderer.SetPosition(1, endPosition);
     }
 
+    private void OnDestroy()
+    {
+        try
+        {
+            currentLaserBehaviour.OnHitEnd();
+        }
+        catch (Exception){};
+    }
 }

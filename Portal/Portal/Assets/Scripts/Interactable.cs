@@ -11,8 +11,8 @@ public class Interactable : MonoBehaviour
     public UnityEvent OnStartInteract;
     public UnityEvent OnEndInteract;
 
-    [SerializeField] private bool interactableByUser = true;
-    [SerializeField] private bool interactableByTrigger = false;
+    [SerializeField] protected bool interactableByUser = true;
+    [SerializeField] protected bool interactableByTrigger = false;
     
     private void OnTriggerStay(Collider other)
     {

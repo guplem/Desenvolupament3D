@@ -15,6 +15,7 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] private float m_WalkSpeed;
     [SerializeField] private float m_SprintSpeed;
     [SerializeField] private float m_JumpSpeed;
+    [SerializeField] private float m_BridgeForce;
     
     
     private bool m_OnGround = false;
@@ -70,5 +71,15 @@ public class PlayerMovementController : MonoBehaviour
             m_OnGround=false;
         if((l_CollisionFlags & CollisionFlags.Above)!=0 &&  m_VerticalSpeed>0.0f)
             m_VerticalSpeed=0.0f;
+    }
+    
+    
+    public void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if(hit.collider.tag=="Bridge")
+        {
+            Rigidbody l_Bridge=hit.collider.attachedRigidbody;
+            l_Bridge.AddForceAtPosition(-hit.normal*m_BridgeForce, hit.point);
+        }
     }
 }

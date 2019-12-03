@@ -63,6 +63,7 @@ MonoBehaviour:
   m_WalkSpeed: 10
   m_SprintSpeed: 20
   m_JumpSpeed: 5
+  m_BridgeForce: 5
 --- !u!143 &2853271028672352237
 CharacterController:
   m_ObjectHideFlags: 0

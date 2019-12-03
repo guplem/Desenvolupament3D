@@ -9,47 +9,61 @@ public class PlayerMovementController : MonoBehaviour
     [Header("Components")]
     [SerializeField] private CameraController m_CameraController;
     [SerializeField] private MarioAnimController m_Animator;
-    private CharacterController characterController;
+    private CharacterController m_CharacterController;
     
     [Header("Configuration")]
-    [SerializeField] private float walkSpeed;
+    [SerializeField] private float m_WalkSpeed;
+    [SerializeField] private float m_SprintSpeed;
+    [SerializeField] private float m_JumpSpeed;
+    
+    
+    private bool m_OnGround = false;
+    private float m_VerticalSpeed = 0f;
     
     private void Start()
     {
-        characterController = GetComponent<CharacterController>();
+        m_CharacterController = GetComponent<CharacterController>();
     }
 
     void Update()
     {
-        Move(GetHorizontalMovement());
-        Move(GetVerticalMovement());
-    }
+        // Get Horizontal and Vertical Input
+        float horizontalInput = Input.GetAxis ("Horizontal");
+        float verticalInput = Input.GetAxis ("Vertical");
 
-    private Vector3 GetVerticalMovement()
-    {
-        return Vector3.zero;
-        // TODO
-    }
+        // Calculate the Direction to Move based on the tranform of the Player
+        Vector3 moveDirectionForward = m_CameraController.transform.forward * verticalInput;
+        Vector3 moveDirectionSide = m_CameraController.transform.right * horizontalInput;
+        Vector3 direction = (moveDirectionForward + moveDirectionSide).normalized;
+    
+        // Calculate walking the distance
+        Vector3 distance = direction * m_WalkSpeed * Time.deltaTime;
 
-    private Vector3 GetHorizontalMovement()
-    {
-        Vector3 l_Movement=Vector3.zero;
-        Vector3 l_Forward=m_CameraController.transform.forward;
-        Vector3 l_Right=m_CameraController.transform.right;
-        l_Forward.y=0.0f;
-        l_Forward.Normalize();
-        l_Right.y=0.0f;
-        l_Right.Normalize();
-        if(Input.GetKey(KeyCode.W))
-            l_Movement=l_Forward*walkSpeed;
-        else if(Input.GetKey(KeyCode.S))
-            l_Movement=-l_Forward*walkSpeed;
+        //Sprint
+        float l_SpeedMultiplier=1.0f;
+        if (Input.GetKey(KeyCode.LeftShift))
+            distance=distance.normalized * m_SprintSpeed * Time.deltaTime;
 
-        return l_Movement;
-    }
-
-    private void Move(Vector3 movement)
-    {
-        characterController.Move(movement);
+        //Jump
+        if(m_OnGround && Input.GetButtonDown("Jump"))
+            m_VerticalSpeed=m_JumpSpeed;
+    
+        // Apply gravity
+        m_VerticalSpeed+=Physics.gravity.y*Time.deltaTime;
+        distance.y=m_VerticalSpeed*Time.deltaTime;
+    
+        // Apply Movement to Player
+        CollisionFlags l_CollisionFlags=m_CharacterController.Move(distance);
+    
+        // Process vertical collisions
+        if((l_CollisionFlags & CollisionFlags.Below)!=0)
+        {
+            m_OnGround=true;
+            m_VerticalSpeed=0.0f;
+        }
+        else
+            m_OnGround=false;
+        if((l_CollisionFlags & CollisionFlags.Above)!=0 &&  m_VerticalSpeed>0.0f)
+            m_VerticalSpeed=0.0f;
     }
 }

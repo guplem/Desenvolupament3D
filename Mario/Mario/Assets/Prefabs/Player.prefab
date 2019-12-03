@@ -60,7 +60,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CameraController: {fileID: 0}
   m_Animator: {fileID: 886955409}
-  walkSpeed: 0.1
+  m_WalkSpeed: 10
+  m_SprintSpeed: 20
+  m_JumpSpeed: 5
 --- !u!143 &2853271028672352237
 CharacterController:
   m_ObjectHideFlags: 0

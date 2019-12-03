@@ -96,7 +96,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dddc8d603f262f4f9b9d20442cd474c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AngleLocked: 0
   m_YawRotationalSpeed: 200
   m_PitchRotationalSpeed: 200
   m_MinPitch: 5

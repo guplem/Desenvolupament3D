@@ -44,6 +44,8 @@ public class PlayerMovementController : MonoBehaviour
             l_Movement=l_Forward*walkSpeed;
         else if(Input.GetKey(KeyCode.S))
             l_Movement=-l_Forward*walkSpeed;
+
+        return l_Movement;
     }
 
     private void Move(Vector3 movement)

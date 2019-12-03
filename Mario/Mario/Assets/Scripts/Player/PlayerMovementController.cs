@@ -40,7 +40,6 @@ public class PlayerMovementController : MonoBehaviour
         Vector3 displacement = direction * m_WalkSpeed * Time.deltaTime;
 
         //Sprint
-        float l_SpeedMultiplier=1.0f;
         if (Input.GetKey(KeyCode.LeftShift))
             displacement=displacement.normalized * m_SprintSpeed * Time.deltaTime;
 

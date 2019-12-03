@@ -5,12 +5,12 @@ using UnityEngine;
 public class MarioAnimController : MonoBehaviour
 {
 
-    private Animator animator;
-    
+    public Animator animator { get; private set; }
+
     public float horizontalSpeed
     {
         get { return animator.GetFloat("speed"); } 
-        set { animator.SetFloat("speed", value/15f ); Debug.Log(value + " --> " + value/17f); } 
+        set { animator.SetFloat("speed", value/15f ); } 
     }
     
     void Start()
@@ -18,4 +18,13 @@ public class MarioAnimController : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
+    void Step()
+    {
+        Debug.Log("Step");
+    }
+
+    /*public void SetSpeed(float f)
+    {
+        horizontalSpeed = f;
+    }*/
 }

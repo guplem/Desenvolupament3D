@@ -37,12 +37,12 @@ public class PlayerMovementController : MonoBehaviour
         Vector3 direction = (moveDirectionForward + moveDirectionSide).normalized;
     
         // Calculate walking the distance
-        Vector3 distance = direction * m_WalkSpeed * Time.deltaTime;
+        Vector3 displacement = direction * m_WalkSpeed * Time.deltaTime;
 
         //Sprint
         float l_SpeedMultiplier=1.0f;
         if (Input.GetKey(KeyCode.LeftShift))
-            distance=distance.normalized * m_SprintSpeed * Time.deltaTime;
+            displacement=displacement.normalized * m_SprintSpeed * Time.deltaTime;
 
         //Jump
         if(m_OnGround && Input.GetButtonDown("Jump"))
@@ -50,10 +50,16 @@ public class PlayerMovementController : MonoBehaviour
     
         // Apply gravity
         m_VerticalSpeed+=Physics.gravity.y*Time.deltaTime;
-        distance.y=m_VerticalSpeed*Time.deltaTime;
+        displacement.y=m_VerticalSpeed*Time.deltaTime;
     
         // Apply Movement to Player
-        CollisionFlags l_CollisionFlags=m_CharacterController.Move(distance);
+        CollisionFlags l_CollisionFlags=m_CharacterController.Move(displacement);
+        
+        //Apply rotation to Player
+        Vector3 displacementDir = displacement.normalized;
+        if (horizontalInput != 0 || verticalInput != 0)
+            transform.rotation = Quaternion.LookRotation(displacementDir);
+            
     
         // Process vertical collisions
         if((l_CollisionFlags & CollisionFlags.Below)!=0)

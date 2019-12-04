@@ -56,9 +56,6 @@ public class CameraController : MonoBehaviour
         Debug.DrawRay(l_Ray.origin, l_Ray.direction, Color.magenta, 0.1f );
         if (Physics.Raycast(l_Ray, out l_RaycastHit, l_Distance, m_RaycastLayerMask))
         {
-            if (l_RaycastHit.collider.gameObject.layer != LayerMask.NameToLayer("World"))
-                Debug.LogWarning("Camera ray hiting with GameObject " + l_RaycastHit.collider.gameObject.name + " with layer " + l_RaycastHit.collider.gameObject.layer, l_RaycastHit.collider.gameObject);
-
             l_DesiredPosition = l_RaycastHit.point + l_Direction * m_OffsetOnCollision;
         }
             

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3761597464362660725}
   - component: {fileID: 3761597464362660723}
-  - component: {fileID: 3761597464362660722}
+  - component: {fileID: 7710108197919850282}
   m_Layer: 0
   m_Name: KillWithFeet
   m_TagString: Untagged
@@ -46,7 +46,7 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3761597464362660722
+--- !u!114 &7710108197919850282
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -55,9 +55,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3761597464362660724}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddb93b5e254f9914ea3ccc94d86ea1d7, type: 3}
+  m_Script: {fileID: 11500000, guid: c7fd2dfb13ee7f543bf891a1a490826c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objectToDestroy: {fileID: 3761597464842240610}
 --- !u!1 &3761597464842240608
 GameObject:
   m_ObjectHideFlags: 0
@@ -157,7 +158,7 @@ GameObject:
   - component: {fileID: 3761597465236462134}
   - component: {fileID: 1300778117}
   m_Layer: 0
-  m_Name: Goomba (1)
+  m_Name: Goomba
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

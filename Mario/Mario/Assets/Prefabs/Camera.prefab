@@ -105,4 +105,4 @@ MonoBehaviour:
   m_RaycastLayerMask:
     serializedVersion: 2
     m_Bits: 567
-  m_OffsetOnCollision: 2.5
+  m_OffsetOnCollision: 0.5

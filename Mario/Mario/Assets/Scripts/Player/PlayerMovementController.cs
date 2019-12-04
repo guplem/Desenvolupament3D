@@ -54,6 +54,7 @@ public class PlayerMovementController : MonoBehaviour
     
         // Apply Movement to Player
         CollisionFlags l_CollisionFlags=m_CharacterController.Move(displacement);
+        m_Animator.horizontalSpeed = displacement.magnitude;
         
         //Apply rotation to Player
         Vector3 displacementDir = displacement.normalized;

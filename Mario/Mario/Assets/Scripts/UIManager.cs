@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject healthArea;
     [SerializeField] private GameObject deadScreen;
     [SerializeField] private GameObject endGameScreen;
+    [SerializeField] private GameObject youWinScreen;
     
     private void Awake()
     {
@@ -53,6 +54,11 @@ public class UIManager : MonoBehaviour
     public void ShowEndGameScreen()
     {
         endGameScreen.SetActive(true);
+    }
+    
+    public void ShowYouWinScreen()
+    {
+        youWinScreen.SetActive(true);
     }
 
     public void SetLivesTo(int value)

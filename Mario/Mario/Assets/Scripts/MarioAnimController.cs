@@ -10,7 +10,7 @@ public class MarioAnimController : MonoBehaviour
     public float horizontalSpeed
     {
         get { return animator.GetFloat("speed"); } 
-        set { animator.SetFloat("speed", value*3 ); } 
+        set { animator.SetFloat("speed", value*3.5f); } 
     }
     
     void Start()
@@ -20,7 +20,7 @@ public class MarioAnimController : MonoBehaviour
 
     void Step()
     {
-        Debug.Log("Step");
+//        Debug.Log("Step");
     }
 
     /*public void SetSpeed(float f)

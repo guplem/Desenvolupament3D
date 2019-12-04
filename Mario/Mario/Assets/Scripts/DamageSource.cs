@@ -25,7 +25,6 @@ public class DamageSource : MonoBehaviour
             else
             {
                 character.TakeDamage(m_DamageAmount);
-                
             }
         }
 

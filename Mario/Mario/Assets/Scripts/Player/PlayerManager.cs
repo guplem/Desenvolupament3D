@@ -28,14 +28,12 @@ public class PlayerManager : MonoBehaviour
     public int lives
     {
         get { return _lives; }
-        set { _lives = value < 0 ? 0 : value; UIManager.Instance.SetLivesTo(_lives); if (_lives <= 0) UIManager.Instance.ShowEndGameScreen(); Debug.Log("LIVES = " + _lives);}
+        set { _lives = value < 0 ? 0 : value; UIManager.Instance.SetLivesTo(_lives); if (_lives <= 0) UIManager.Instance.ShowEndGameScreen();}
     }
     private int _lives;
     
     private void Awake()
     {
-        
-        Debug.LogWarning("STARTING AWAKE");
         DontDestroyOnLoad(gameObject);
 
         if (Instance != null)
@@ -49,7 +47,6 @@ public class PlayerManager : MonoBehaviour
         }
 
         Instance = this;
-        Debug.LogWarning("INSTANCE PM DONE");
     }
 
     private void Start()

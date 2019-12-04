@@ -28,7 +28,6 @@ public class Goomba : MonoBehaviour
         SetState(State.PATROL);
         m_GameController = PlayerManager.Instance;
         m_NavMeshAgent = GetComponent<NavMeshAgent>();
-        Debug.Log(m_NavMeshAgent);
     }
 
     // Update is called once per frame

@@ -48,4 +48,9 @@ public class PlayerManager : MonoBehaviour
         lives--;
         UIManager.Instance.ShowDeadScreen();
     }
+
+    public void TakeDamage(int damageAmount)
+    {
+        health--;
+    }
 }
